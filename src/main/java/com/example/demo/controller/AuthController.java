@@ -32,23 +32,19 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public Map<String, String> login(@RequestBody UserAccount user) {
+public ApiResponse login(@RequestBody LoginRequest request) {
 
-        Authentication authentication =
-                authenticationManager.authenticate(
-                        new UsernamePasswordAuthenticationToken(
-                                user.getEmail(), user.getPassword()));
+    UserAccount user = userAccountService.findByEmail(request.getEmail());
 
-        UserAccount dbUser =
-                userAccountService.findByEmail(user.getEmail());
-
-        String token =
-                jwtUtil.generateToken(
-                        dbUser.getEmail(), dbUser.getRole());
-
-        Map<String, String> response = new HashMap<>();
-        response.put("token", token);
-
-        return response;
+    if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+        return new ApiResponse(false, "Invalid credentials");
     }
+
+    String token = jwtUtil.generateToken(
+            user.getId(),
+            user.getEmail(),
+            user.getRole()
+    );
+
+    return new ApiResponse(true, "Login successful", token);
 }

@@ -13,7 +13,6 @@ public class ClashDetectionServiceImpl implements ClashDetectionService {
 
     private final ClashRecordRepository clashRecordRepository;
 
-    
     public ClashDetectionServiceImpl(ClashRecordRepository clashRecordRepository) {
         this.clashRecordRepository = clashRecordRepository;
     }
@@ -31,9 +30,7 @@ public class ClashDetectionServiceImpl implements ClashDetectionService {
     @Override
     public ClashRecord resolveClash(Long clashId) {
         ClashRecord clash = clashRecordRepository.findById(clashId)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("Clash not found"));
-
+                .orElseThrow(() -> new ResourceNotFoundException("Clash not found"));
         clash.setResolved(true);
         return clashRecordRepository.save(clash);
     }
