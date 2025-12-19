@@ -13,7 +13,7 @@ public class ClashDetectionServiceImpl implements ClashDetectionService {
 
     private final ClashRecordRepository clashRecordRepository;
 
-    // ✅ Constructor name MUST match class name
+    
     public ClashDetectionServiceImpl(ClashRecordRepository clashRecordRepository) {
         this.clashRecordRepository = clashRecordRepository;
     }
