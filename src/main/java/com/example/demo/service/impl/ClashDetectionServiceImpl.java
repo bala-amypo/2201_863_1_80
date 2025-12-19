@@ -9,10 +9,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ClashRecordServiceImpl implements ClashDetectionService {
+public class ClashDetectionServiceImpl implements ClashDetectionService {
 
     private final ClashRecordRepository clashRecordRepository;
 
+    // ✅ Constructor name MUST match class name
     public ClashDetectionServiceImpl(ClashRecordRepository clashRecordRepository) {
         this.clashRecordRepository = clashRecordRepository;
     }
@@ -29,9 +30,9 @@ public class ClashRecordServiceImpl implements ClashDetectionService {
 
     @Override
     public ClashRecord resolveClash(Long clashId) {
-
         ClashRecord clash = clashRecordRepository.findById(clashId)
-                .orElseThrow(() -> new ResourceNotFoundException("Clash not found"));
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Clash not found"));
 
         clash.setResolved(true);
         return clashRecordRepository.save(clash);
