@@ -14,9 +14,9 @@ import java.util.List;
 @Tag(name = "Clash Records")
 public class ClashRecordController {
     
-    private final ClashDetectionService clashDetectionService;
+    private final ClashRecordService clashDetectionService;
     
-    public ClashRecordController(ClashDetectionService clashDetectionService) {
+    public ClashRecordController(ClashRecordService clashDetectionService) {
         this.clashDetectionService = clashDetectionService;
     }
     
