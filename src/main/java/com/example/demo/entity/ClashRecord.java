@@ -49,7 +49,7 @@ public class ClashRecord {
         }
     }
 
-    // Getters and Setters
+    
 
     public Long getId() {
         return id;
