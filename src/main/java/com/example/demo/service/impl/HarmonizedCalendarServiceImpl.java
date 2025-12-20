@@ -20,14 +20,13 @@ public class HarmonizedCalendarServiceImpl implements HarmonizedCalendarService 
 
     @Override
     public HarmonizedCalendar generateHarmonizedCalendar(String title, String generatedBy) {
-
         HarmonizedCalendar calendar = new HarmonizedCalendar();
         calendar.setTitle(title);
         calendar.setGeneratedBy(generatedBy);
         calendar.setEffectiveFrom(LocalDate.now());
-        calendar.setEffectiveTo(LocalDate.now().plusMonths(6));
+        calendar.setEffectiveTo(LocalDate.now().plusYears(1));
         calendar.setEventsJson("[]");
-
+        
         return harmonizedCalendarRepository.save(calendar);
     }
 
@@ -44,7 +43,6 @@ public class HarmonizedCalendarServiceImpl implements HarmonizedCalendarService 
 
     @Override
     public List<HarmonizedCalendar> getCalendarsWithinRange(LocalDate start, LocalDate end) {
-        return harmonizedCalendarRepository
-                .findByEffectiveFromLessThanEqualAndEffectiveToGreaterThanEqual(start, end);
+        return harmonizedCalendarRepository.findByEffectiveFromLessThanEqualAndEffectiveToGreaterThanEqual(start, end);
     }
 }

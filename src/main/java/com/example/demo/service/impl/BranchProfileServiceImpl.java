@@ -24,17 +24,10 @@ public class BranchProfileServiceImpl implements BranchProfileService {
 
     @Override
     public BranchProfile updateBranchStatus(Long id, boolean active) {
-
         BranchProfile branch = branchProfileRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Branch not found"));
-
         branch.setActive(active);
         return branchProfileRepository.save(branch);
-    }
-
-    @Override
-    public List<BranchProfile> getAllBranches() {
-        return branchProfileRepository.findAll();
     }
 
     @Override
@@ -47,5 +40,10 @@ public class BranchProfileServiceImpl implements BranchProfileService {
     public BranchProfile findByBranchCode(String branchCode) {
         return branchProfileRepository.findByBranchCode(branchCode)
                 .orElseThrow(() -> new ResourceNotFoundException("Branch not found"));
+    }
+
+    @Override
+    public List<BranchProfile> getAllBranches() {
+        return branchProfileRepository.findAll();
     }
 }

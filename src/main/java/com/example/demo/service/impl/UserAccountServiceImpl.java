@@ -16,25 +16,23 @@ public class UserAccountServiceImpl implements UserAccountService {
     private final UserAccountRepository userAccountRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public UserAccountServiceImpl(UserAccountRepository userAccountRepository,
-                                  PasswordEncoder passwordEncoder) {
+    public UserAccountServiceImpl(UserAccountRepository userAccountRepository, PasswordEncoder passwordEncoder) {
         this.userAccountRepository = userAccountRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public UserAccount register(UserAccount user) {
-
         if (userAccountRepository.existsByEmail(user.getEmail())) {
             throw new ValidationException("Email already in use");
         }
-
+        
         if (user.getRole() == null) {
             user.setRole("REVIEWER");
         }
-
+        
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-
+        
         return userAccountRepository.save(user);
     }
 

@@ -18,53 +18,56 @@ public class EventMergeServiceImpl implements EventMergeService {
     private final EventMergeRecordRepository eventMergeRecordRepository;
     private final AcademicEventRepository academicEventRepository;
 
-    public EventMergeServiceImpl(EventMergeRecordRepository eventMergeRecordRepository,
-                                 AcademicEventRepository academicEventRepository) {
+    public EventMergeServiceImpl(EventMergeRecordRepository eventMergeRecordRepository, AcademicEventRepository academicEventRepository) {
         this.eventMergeRecordRepository = eventMergeRecordRepository;
         this.academicEventRepository = academicEventRepository;
     }
 
     @Override
     public EventMergeRecord mergeEvents(List<Long> eventIds, String reason) {
+        List<AcademicEvent> events = academicEventRepository.findAllById(eventIds);
+        
+        if (events.size() != eventIds.size()) {
+            throw new ResourceNotFoundException("Event not found");
+        }
 
-        List<AcademicEvent> events = eventIds.stream()
-                .map(id -> academicEventRepository.findById(id)
-                        .orElseThrow(() -> new ResourceNotFoundException("Event not found")))
-                .toList();
+        String sourceEventIds = eventIds.stream()
+                .map(String::valueOf)
+                .collect(Collectors.joining(","));
 
-        LocalDate start = events.stream()
+        LocalDate mergedStartDate = events.stream()
                 .map(AcademicEvent::getStartDate)
                 .min(LocalDate::compareTo)
                 .orElse(null);
 
-        LocalDate end = events.stream()
+        LocalDate mergedEndDate = events.stream()
                 .map(AcademicEvent::getEndDate)
                 .max(LocalDate::compareTo)
                 .orElse(null);
 
-        String sourceIds = eventIds.stream()
-                .map(String::valueOf)
-                .collect(Collectors.joining(","));
+        String mergedTitle = events.stream()
+                .map(AcademicEvent::getTitle)
+                .collect(Collectors.joining(" & "));
 
-        EventMergeRecord record = new EventMergeRecord();
-        record.setSourceEventIds(sourceIds);
-        record.setMergedTitle("Merged Event");
-        record.setMergedStartDate(start);
-        record.setMergedEndDate(end);
-        record.setMergeReason(reason);
+        EventMergeRecord mergeRecord = new EventMergeRecord();
+        mergeRecord.setSourceEventIds(sourceEventIds);
+        mergeRecord.setMergedTitle(mergedTitle);
+        mergeRecord.setMergedStartDate(mergedStartDate);
+        mergeRecord.setMergedEndDate(mergedEndDate);
+        mergeRecord.setMergeReason(reason);
 
-        return eventMergeRecordRepository.save(record);
-    }
-
-    @Override
-    public List<EventMergeRecord> getAllMergeRecords() {
-        return eventMergeRecordRepository.findAll();
+        return eventMergeRecordRepository.save(mergeRecord);
     }
 
     @Override
     public EventMergeRecord getMergeRecordById(Long id) {
         return eventMergeRecordRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Merge record not found"));
+    }
+
+    @Override
+    public List<EventMergeRecord> getAllMergeRecords() {
+        return eventMergeRecordRepository.findAll();
     }
 
     @Override

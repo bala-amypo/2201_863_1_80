@@ -23,16 +23,16 @@ public class ClashDetectionServiceImpl implements ClashDetectionService {
     }
 
     @Override
-    public List<ClashRecord> getClashesForEvent(Long eventId) {
-        return clashRecordRepository.findByEventAIdOrEventBId(eventId, eventId);
-    }
-
-    @Override
     public ClashRecord resolveClash(Long clashId) {
         ClashRecord clash = clashRecordRepository.findById(clashId)
                 .orElseThrow(() -> new ResourceNotFoundException("Clash not found"));
         clash.setResolved(true);
         return clashRecordRepository.save(clash);
+    }
+
+    @Override
+    public List<ClashRecord> getClashesForEvent(Long eventId) {
+        return clashRecordRepository.findByEventAIdOrEventBId(eventId, eventId);
     }
 
     @Override
