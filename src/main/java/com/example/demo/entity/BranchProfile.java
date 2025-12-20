@@ -20,13 +20,12 @@ public class BranchProfile {
 
     private LocalDateTime lastSyncAt;
 
+    @Column(columnDefinition = "boolean default true")
     private Boolean active = true;
 
-    public BranchProfile() {
-    }
+    public BranchProfile() {}
 
-    public BranchProfile(Long id, String branchCode, String branchName,
-                         String contactEmail, LocalDateTime lastSyncAt, Boolean active) {
+    public BranchProfile(Long id, String branchCode, String branchName, String contactEmail, LocalDateTime lastSyncAt, Boolean active) {
         this.id = id;
         this.branchCode = branchCode;
         this.branchName = branchName;
@@ -36,57 +35,52 @@ public class BranchProfile {
     }
 
     @PrePersist
-    public void onCreate() {
-        this.lastSyncAt = LocalDateTime.now();
-        if (this.active == null) {
-            this.active = true;
-        }
+    protected void onCreate() {
+        lastSyncAt = LocalDateTime.now();
     }
-
-    
 
     public Long getId() {
         return id;
-    }
-
-    public String getBranchCode() {
-        return branchCode;
-    }
-
-    public String getBranchName() {
-        return branchName;
-    }
-
-    public String getContactEmail() {
-        return contactEmail;
-    }
-
-    public LocalDateTime getLastSyncAt() {
-        return lastSyncAt;
-    }
-
-    public Boolean getActive() {
-        return active;
     }
 
     public void setId(Long id) {
         this.id = id;
     }
 
+    public String getBranchCode() {
+        return branchCode;
+    }
+
     public void setBranchCode(String branchCode) {
         this.branchCode = branchCode;
+    }
+
+    public String getBranchName() {
+        return branchName;
     }
 
     public void setBranchName(String branchName) {
         this.branchName = branchName;
     }
 
+    public String getContactEmail() {
+        return contactEmail;
+    }
+
     public void setContactEmail(String contactEmail) {
         this.contactEmail = contactEmail;
     }
 
+    public LocalDateTime getLastSyncAt() {
+        return lastSyncAt;
+    }
+
     public void setLastSyncAt(LocalDateTime lastSyncAt) {
         this.lastSyncAt = lastSyncAt;
+    }
+
+    public Boolean getActive() {
+        return active;
     }
 
     public void setActive(Boolean active) {
