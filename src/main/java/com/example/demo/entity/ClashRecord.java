@@ -12,91 +12,37 @@ public class ClashRecord {
     private Long id;
 
     private Long eventAId;
-
     private Long eventBId;
-
     private String clashType;
-
     private String severity;
-
     private String details;
-
     private LocalDateTime detectedAt;
-
-    private Boolean resolved = false;
+    private Boolean resolved;
 
     @PrePersist
     public void prePersist() {
         detectedAt = LocalDateTime.now();
-        if (resolved == null) {
-            resolved = false;
-        }
+        if (resolved == null) resolved = false;
     }
 
-    public ClashRecord() {}
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
+    public Long getEventAId() { return eventAId; }
+    public void setEventAId(Long eventAId) { this.eventAId = eventAId; }
 
-    public Long getId() {
-        return id;
-    }
+    public Long getEventBId() { return eventBId; }
+    public void setEventBId(Long eventBId) { this.eventBId = eventBId; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public String getClashType() { return clashType; }
+    public void setClashType(String clashType) { this.clashType = clashType; }
 
-    public Long getEventAId() {
-        return eventAId;
-    }
+    public String getSeverity() { return severity; }
+    public void setSeverity(String severity) { this.severity = severity; }
 
-    public void setEventAId(Long eventAId) {
-        this.eventAId = eventAId;
-    }
+    public String getDetails() { return details; }
+    public void setDetails(String details) { this.details = details; }
 
-    public Long getEventBId() {
-        return eventBId;
-    }
-
-    public void setEventBId(Long eventBId) {
-        this.eventBId = eventBId;
-    }
-
-    public String getClashType() {
-        return clashType;
-    }
-
-    public void setClashType(String clashType) {
-        this.clashType = clashType;
-    }
-
-    public String getSeverity() {
-        return severity;
-    }
-
-    public void setSeverity(String severity) {
-        this.severity = severity;
-    }
-
-    public String getDetails() {
-        return details;
-    }
-
-    public void setDetails(String details) {
-        this.details = details;
-    }
-
-    public LocalDateTime getDetectedAt() {
-        return detectedAt;
-    }
-
-    public void setDetectedAt(LocalDateTime detectedAt) {
-        this.detectedAt = detectedAt;
-    }
-
-    public Boolean getResolved() {
-        return resolved;
-    }
-
-    public void setResolved(Boolean resolved) {
-        this.resolved = resolved;
-    }
+    public Boolean getResolved() { return resolved; }
+    public void setResolved(Boolean resolved) { this.resolved = resolved; }
 }
