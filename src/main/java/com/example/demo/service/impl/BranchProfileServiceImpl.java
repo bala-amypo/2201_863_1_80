@@ -1,53 +1,49 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.entity.BranchProfile;
-import com.example.demo.exception.ResourceNotFoundException;
-import com.example.demo.repository.BranchProfileRepository;
-import com.example.demo.service.BranchProfileService;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import com.example.demo.entity.BranchProfile;
+import com.example.demo.repository.BranchProfileRepository;
+import com.example.demo.service.BranchProfileService;
 
 @Service
 public class BranchProfileServiceImpl implements BranchProfileService {
 
-    private final BranchProfileRepository repo;
+    private final BranchProfileRepository repository;
 
-    public BranchProfileServiceImpl(BranchProfileRepository repo) {
-        this.repo = repo;
+    public BranchProfileServiceImpl(BranchProfileRepository repository) {
+        this.repository = repository;
     }
 
     @Override
-    public BranchProfile create(BranchProfile branch) {
-        return repo.save(branch);
+    public BranchProfile createBranch(BranchProfile branch) {
+        return repository.save(branch);
     }
 
     @Override
-    public BranchProfile getById(Long id) {
-        return repo.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Branch not found"));
-    }
-
-    @Override
-    public BranchProfile getByBranchCode(String branchCode) {
-        return repo.findByBranchCode(branchCode)
-                .orElseThrow(() -> new ResourceNotFoundException("Branch not found"));
-    }
-
-    @Override
-    public List<BranchProfile> getAll() {
-        return repo.findAll();
-    }
-
-    @Override
-    public BranchProfile updateStatus(Long id, boolean active) {
-        BranchProfile branch = getById(id);
+    public BranchProfile updateBranchStatus(Long id, boolean active) {
+        BranchProfile branch = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Branch not found"));
         branch.setActive(active);
-        return repo.save(branch);
+        return repository.save(branch);
     }
 
     @Override
-    public void delete(Long id) {
-        repo.delete(getById(id));
+    public BranchProfile getBranchById(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Branch not found"));
+    }
+
+    @Override
+    public List<BranchProfile> getAllBranches() {
+        return repository.findAll();
+    }
+
+    @Override
+    public BranchProfile findByBranchCode(String branchCode) {
+        return repository.findByBranchCode(branchCode)
+                .orElseThrow(() -> new RuntimeException("Branch not found"));
     }
 }
