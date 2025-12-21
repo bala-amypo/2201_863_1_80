@@ -5,7 +5,6 @@ import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.exception.ValidationException;
 import com.example.demo.repository.UserAccountRepository;
 import com.example.demo.service.UserAccountService;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,20 +13,21 @@ import java.util.List;
 public class UserAccountServiceImpl implements UserAccountService {
 
     private final UserAccountRepository repo;
-    private final PasswordEncoder encoder;
 
-    public UserAccountServiceImpl(UserAccountRepository repo, PasswordEncoder encoder) {
+    public UserAccountServiceImpl(UserAccountRepository repo) {
         this.repo = repo;
-        this.encoder = encoder;
     }
 
     @Override
     public UserAccount register(UserAccount user) {
-        if (repo.existsByEmail(user.getEmail()))
+        if (repo.existsByEmail(user.getEmail())) {
             throw new ValidationException("Email already in use");
+        }
 
-        user.setPassword(encoder.encode(user.getPassword()));
-        if (user.getRole() == null) user.setRole("REVIEWER");
+        if (user.getRole() == null) {
+            user.setRole("REVIEWER");
+        }
+
         return repo.save(user);
     }
 
