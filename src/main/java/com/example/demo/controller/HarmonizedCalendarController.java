@@ -19,7 +19,7 @@ public class HarmonizedCalendarController {
         this.calendarService = calendarService;
     }
 
-    // POST /generate – Generate a harmonized calendar
+    
     @PostMapping("/generate")
     public ResponseEntity<HarmonizedCalendar> generate(
             @RequestParam String title,
@@ -27,19 +27,19 @@ public class HarmonizedCalendarController {
         return ResponseEntity.ok(calendarService.generateHarmonizedCalendar(title, generatedBy));
     }
 
-    // GET /{id} – Get calendar by ID
+   
     @GetMapping("/{id}")
     public ResponseEntity<HarmonizedCalendar> getById(@PathVariable Long id) {
         return ResponseEntity.ok(calendarService.getCalendarById(id));
     }
 
-    // GET / – List all calendars
+    
     @GetMapping
     public ResponseEntity<List<HarmonizedCalendar>> getAll() {
         return ResponseEntity.ok(calendarService.getAllCalendars());
     }
 
-    // GET /range – Get calendars within date range
+    
     @GetMapping("/range")
     public ResponseEntity<List<HarmonizedCalendar>> getByRange(
             @RequestParam LocalDate start,
