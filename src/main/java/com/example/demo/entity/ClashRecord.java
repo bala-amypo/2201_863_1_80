@@ -35,7 +35,6 @@ public class ClashRecord {
 
     public ClashRecord() {}
 
-    // GETTERS & SETTERS
 
     public Long getId() {
         return id;

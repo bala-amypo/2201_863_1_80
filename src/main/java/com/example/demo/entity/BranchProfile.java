@@ -32,7 +32,6 @@ public class BranchProfile {
 
     public BranchProfile() {}
 
-    // GETTERS & SETTERS
 
     public Long getId() {
         return id;
