@@ -1,17 +1,18 @@
 package com.example.demo.service;
 
 import java.util.List;
+
 import com.example.demo.entity.AcademicEvent;
 
 public interface AcademicEventService {
 
-    AcademicEvent createEvent(AcademicEvent event);
+    AcademicEvent create(AcademicEvent event);
 
-    AcademicEvent updateEvent(Long id, AcademicEvent event);
+    AcademicEvent update(Long id, AcademicEvent event);
 
-    AcademicEvent getEventById(Long id);
+    AcademicEvent getById(Long id);
 
-    List<AcademicEvent> getAllEvents();
+    List<AcademicEvent> getAll();
 
     List<AcademicEvent> getEventsByBranch(Long branchId);
 }

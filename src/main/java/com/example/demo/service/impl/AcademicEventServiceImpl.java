@@ -42,7 +42,7 @@ public class AcademicEventServiceImpl implements AcademicEventService {
     }
 
     @Override
-    public List<AcademicEvent> getByBranch(Long branchId) {
+    public List<AcademicEvent> getEventsByBranch(Long branchId) {
         return repo.findByBranchId(branchId);
     }
 }

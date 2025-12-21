@@ -6,15 +6,15 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.EventMergeRecord;
-import com.example.demo.repository.EventMergeRepository;
+import com.example.demo.repository.EventMergeRecordRepository;
 import com.example.demo.service.EventMergeService;
 
 @Service
 public class EventMergeServiceImpl implements EventMergeService {
 
-    private final EventMergeRepository repo;
+    private final EventMergeRecordRepository repo;
 
-    public EventMergeServiceImpl(EventMergeRepository repo) {
+    public EventMergeServiceImpl(EventMergeRecordRepository repo) {
         this.repo = repo;
     }
 
@@ -28,18 +28,12 @@ public class EventMergeServiceImpl implements EventMergeService {
     }
 
     @Override
-    public EventMergeRecord getMergeRecordById(Long id) {
-        return repo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Merge record not found"));
+    public EventMergeRecord getById(Long id) {
+        return repo.findById(id).orElseThrow();
     }
 
     @Override
-    public List<EventMergeRecord> getAllMergeRecords() {
+    public List<EventMergeRecord> getAll() {
         return repo.findAll();
-    }
-
-    @Override
-    public List<EventMergeRecord> getMergeRecordsByDate(LocalDate start, LocalDate end) {
-        return repo.findByMergeDateBetween(start, end);
     }
 }
