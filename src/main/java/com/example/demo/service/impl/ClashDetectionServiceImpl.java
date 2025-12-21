@@ -11,37 +11,32 @@ import java.util.List;
 @Service
 public class ClashDetectionServiceImpl implements ClashDetectionService {
 
-    private final ClashRecordRepository clashRecordRepository;
+    private final ClashRecordRepository repo;
 
-    public ClashDetectionServiceImpl(ClashRecordRepository clashRecordRepository) {
-        this.clashRecordRepository = clashRecordRepository;
+    public ClashDetectionServiceImpl(ClashRecordRepository repo) {
+        this.repo = repo;
     }
 
-    @Override
-    public ClashRecord logClash(ClashRecord clash) {
-        return clashRecordRepository.save(clash);
+    public ClashRecord create(ClashRecord clash) {
+        return repo.save(clash);
     }
 
-    @Override
-    public ClashRecord resolveClash(Long clashId) {
-        ClashRecord clash = clashRecordRepository.findById(clashId)
-                .orElseThrow(() -> new ResourceNotFoundException("Clash not found"));
+    public ClashRecord resolve(Long id) {
+        ClashRecord clash = getById(id);
         clash.setResolved(true);
-        return clashRecordRepository.save(clash);
+        return repo.save(clash);
     }
 
-    @Override
-    public List<ClashRecord> getClashesForEvent(Long eventId) {
-        return clashRecordRepository.findByEventAIdOrEventBId(eventId, eventId);
+    public ClashRecord getById(Long id) {
+        return repo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Clash not found"));
     }
 
-    @Override
-    public List<ClashRecord> getUnresolvedClashes() {
-        return clashRecordRepository.findByResolvedFalse();
+    public List<ClashRecord> getAll() {
+        return repo.findAll();
     }
 
-    @Override
-    public List<ClashRecord> getAllClashes() {
-        return clashRecordRepository.findAll();
+    public List<ClashRecord> getUnresolved() {
+        return repo.findByResolvedFalse();
     }
 }
