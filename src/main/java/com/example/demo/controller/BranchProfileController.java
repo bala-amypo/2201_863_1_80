@@ -1,52 +1,52 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.BranchProfile;
-import com.example.demo.service.BranchProfileService;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import com.example.demo.entity.BranchProfile;
+import com.example.demo.service.BranchProfileService;
 
 @RestController
 @RequestMapping("/api/branches")
-@Tag(name = "Branch Profiles")
 public class BranchProfileController {
 
-    private final BranchProfileService service;
+    private final BranchProfileService branchProfileService;
 
-    public BranchProfileController(BranchProfileService service) {
-        this.service = service;
+    public BranchProfileController(BranchProfileService branchProfileService) {
+        this.branchProfileService = branchProfileService;
     }
 
+    
     @PostMapping
-    public BranchProfile create(@RequestBody BranchProfile branch) {
-        return service.create(branch);
+    public ResponseEntity<BranchProfile> createBranch(@RequestBody BranchProfile branch) {
+        return ResponseEntity.ok(branchProfileService.createBranch(branch));
     }
 
-    @GetMapping("/{id}")
-    public BranchProfile getById(@PathVariable Long id) {
-        return service.getById(id);
-    }
-
-    @GetMapping("/code/{branchCode}")
-    public BranchProfile getByCode(@PathVariable String branchCode) {
-        return service.getByBranchCode(branchCode);
-    }
-
-    @GetMapping
-    public List<BranchProfile> getAll() {
-        return service.getAll();
-    }
-
+  
     @PutMapping("/{id}/status")
-    public BranchProfile updateStatus(
+    public ResponseEntity<BranchProfile> updateStatus(
             @PathVariable Long id,
             @RequestParam boolean active) {
-        return service.updateStatus(id, active);
+        return ResponseEntity.ok(branchProfileService.updateBranchStatus(id, active));
     }
 
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        service.delete(id);
+    
+    @GetMapping("/{id}")
+    public ResponseEntity<BranchProfile> getBranch(@PathVariable Long id) {
+        return ResponseEntity.ok(branchProfileService.getBranchById(id));
+    }
+
+   
+    @GetMapping
+    public ResponseEntity<List<BranchProfile>> getAllBranches() {
+        return ResponseEntity.ok(branchProfileService.getAllBranches());
+    }
+
+    
+    @GetMapping("/lookup/{branchCode}")
+    public ResponseEntity<BranchProfile> findByCode(@PathVariable String branchCode) {
+        return ResponseEntity.ok(branchProfileService.findByBranchCode(branchCode));
     }
 }
