@@ -19,7 +19,7 @@ public class EventMergeRecord {
 
     private LocalDate mergeDate;
 
-    // ===== getters & setters =====
+    
 
     public Long getId() {
         return id;
