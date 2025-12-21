@@ -2,48 +2,51 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.AcademicEvent;
 import com.example.demo.service.AcademicEventService;
-import org.springframework.http.ResponseEntity;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/events")
+@Tag(name = "Academic Events")
 public class AcademicEventController {
 
-    private final AcademicEventService academicEventService;
+    private final AcademicEventService service;
 
-    public AcademicEventController(AcademicEventService academicEventService) {
-        this.academicEventService = academicEventService;
+    public AcademicEventController(AcademicEventService service) {
+        this.service = service;
     }
 
     @PostMapping
-    public ResponseEntity<AcademicEvent> createEvent(@RequestBody AcademicEvent event) {
-        AcademicEvent createdEvent = academicEventService.createEvent(event);
-        return ResponseEntity.ok(createdEvent);
+    public AcademicEvent create(@RequestBody AcademicEvent event) {
+        return service.create(event);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AcademicEvent> updateEvent(@PathVariable Long id, @RequestBody AcademicEvent event) {
-        AcademicEvent updatedEvent = academicEventService.updateEvent(id, event);
-        return ResponseEntity.ok(updatedEvent);
-    }
-
-    @GetMapping("/branch/{branchId}")
-    public ResponseEntity<List<AcademicEvent>> getEventsByBranch(@PathVariable Long branchId) {
-        List<AcademicEvent> events = academicEventService.getEventsByBranch(branchId);
-        return ResponseEntity.ok(events);
+    public AcademicEvent update(
+            @PathVariable Long id,
+            @RequestBody AcademicEvent event) {
+        return service.update(id, event);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AcademicEvent> getEventById(@PathVariable Long id) {
-        AcademicEvent event = academicEventService.getEventById(id);
-        return ResponseEntity.ok(event);
+    public AcademicEvent getById(@PathVariable Long id) {
+        return service.getById(id);
     }
 
     @GetMapping
-    public ResponseEntity<List<AcademicEvent>> getAllEvents() {
-        List<AcademicEvent> events = academicEventService.getAllEvents();
-        return ResponseEntity.ok(events);
+    public List<AcademicEvent> getAll() {
+        return service.getAll();
+    }
+
+    @GetMapping("/branch/{branchId}")
+    public List<AcademicEvent> getByBranch(@PathVariable Long branchId) {
+        return service.getByBranch(branchId);
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
+        service.delete(id);
     }
 }
