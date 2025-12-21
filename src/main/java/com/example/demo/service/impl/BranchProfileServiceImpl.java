@@ -11,39 +11,43 @@ import java.util.List;
 @Service
 public class BranchProfileServiceImpl implements BranchProfileService {
 
-    private final BranchProfileRepository branchProfileRepository;
+    private final BranchProfileRepository repo;
 
-    public BranchProfileServiceImpl(BranchProfileRepository branchProfileRepository) {
-        this.branchProfileRepository = branchProfileRepository;
+    public BranchProfileServiceImpl(BranchProfileRepository repo) {
+        this.repo = repo;
     }
 
     @Override
-    public BranchProfile createBranch(BranchProfile branch) {
-        return branchProfileRepository.save(branch);
+    public BranchProfile create(BranchProfile branch) {
+        return repo.save(branch);
     }
 
     @Override
-    public BranchProfile updateBranchStatus(Long id, boolean active) {
-        BranchProfile branch = branchProfileRepository.findById(id)
+    public BranchProfile getById(Long id) {
+        return repo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Branch not found"));
+    }
+
+    @Override
+    public BranchProfile getByBranchCode(String branchCode) {
+        return repo.findByBranchCode(branchCode)
+                .orElseThrow(() -> new ResourceNotFoundException("Branch not found"));
+    }
+
+    @Override
+    public List<BranchProfile> getAll() {
+        return repo.findAll();
+    }
+
+    @Override
+    public BranchProfile updateStatus(Long id, boolean active) {
+        BranchProfile branch = getById(id);
         branch.setActive(active);
-        return branchProfileRepository.save(branch);
+        return repo.save(branch);
     }
 
     @Override
-    public BranchProfile getBranchById(Long id) {
-        return branchProfileRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Branch not found"));
-    }
-
-    @Override
-    public BranchProfile findByBranchCode(String branchCode) {
-        return branchProfileRepository.findByBranchCode(branchCode)
-                .orElseThrow(() -> new ResourceNotFoundException("Branch not found"));
-    }
-
-    @Override
-    public List<BranchProfile> getAllBranches() {
-        return branchProfileRepository.findAll();
+    public void delete(Long id) {
+        repo.delete(getById(id));
     }
 }
