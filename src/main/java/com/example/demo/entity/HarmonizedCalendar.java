@@ -22,24 +22,17 @@ public class HarmonizedCalendar {
 
     private LocalDate effectiveTo;
 
+    @Column(columnDefinition = "TEXT")
     private String eventsJson;
+
+    @PrePersist
+    public void prePersist() {
+        generatedAt = LocalDateTime.now();
+    }
 
     public HarmonizedCalendar() {}
 
-    public HarmonizedCalendar(Long id, String title, String generatedBy, LocalDateTime generatedAt, LocalDate effectiveFrom, LocalDate effectiveTo, String eventsJson) {
-        this.id = id;
-        this.title = title;
-        this.generatedBy = generatedBy;
-        this.generatedAt = generatedAt;
-        this.effectiveFrom = effectiveFrom;
-        this.effectiveTo = effectiveTo;
-        this.eventsJson = eventsJson;
-    }
-
-    @PrePersist
-    protected void onCreate() {
-        generatedAt = LocalDateTime.now();
-    }
+    
 
     public Long getId() {
         return id;

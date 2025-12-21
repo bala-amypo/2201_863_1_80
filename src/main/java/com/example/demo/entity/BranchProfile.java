@@ -20,24 +20,19 @@ public class BranchProfile {
 
     private LocalDateTime lastSyncAt;
 
-    @Column(columnDefinition = "boolean default true")
     private Boolean active = true;
+
+    @PrePersist
+    public void prePersist() {
+        lastSyncAt = LocalDateTime.now();
+        if (active == null) {
+            active = true;
+        }
+    }
 
     public BranchProfile() {}
 
-    public BranchProfile(Long id, String branchCode, String branchName, String contactEmail, LocalDateTime lastSyncAt, Boolean active) {
-        this.id = id;
-        this.branchCode = branchCode;
-        this.branchName = branchName;
-        this.contactEmail = contactEmail;
-        this.lastSyncAt = lastSyncAt;
-        this.active = active;
-    }
-
-    @PrePersist
-    protected void onCreate() {
-        lastSyncAt = LocalDateTime.now();
-    }
+    // GETTERS & SETTERS
 
     public Long getId() {
         return id;

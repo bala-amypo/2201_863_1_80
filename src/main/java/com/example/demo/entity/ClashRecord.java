@@ -23,26 +23,19 @@ public class ClashRecord {
 
     private LocalDateTime detectedAt;
 
-    @Column(columnDefinition = "boolean default false")
     private Boolean resolved = false;
+
+    @PrePersist
+    public void prePersist() {
+        detectedAt = LocalDateTime.now();
+        if (resolved == null) {
+            resolved = false;
+        }
+    }
 
     public ClashRecord() {}
 
-    public ClashRecord(Long id, Long eventAId, Long eventBId, String clashType, String severity, String details, LocalDateTime detectedAt, Boolean resolved) {
-        this.id = id;
-        this.eventAId = eventAId;
-        this.eventBId = eventBId;
-        this.clashType = clashType;
-        this.severity = severity;
-        this.details = details;
-        this.detectedAt = detectedAt;
-        this.resolved = resolved;
-    }
-
-    @PrePersist
-    protected void onCreate() {
-        detectedAt = LocalDateTime.now();
-    }
+    // GETTERS & SETTERS
 
     public Long getId() {
         return id;

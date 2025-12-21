@@ -28,24 +28,14 @@ public class AcademicEvent {
 
     private LocalDateTime submittedAt;
 
-    public AcademicEvent() {}
-
-    public AcademicEvent(Long id, Long branchId, String title, String eventType, LocalDate startDate, LocalDate endDate, String location, String description, LocalDateTime submittedAt) {
-        this.id = id;
-        this.branchId = branchId;
-        this.title = title;
-        this.eventType = eventType;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.location = location;
-        this.description = description;
-        this.submittedAt = submittedAt;
-    }
-
     @PrePersist
-    protected void onCreate() {
+    public void prePersist() {
         submittedAt = LocalDateTime.now();
     }
+
+    public AcademicEvent() {}
+
+    // GETTERS & SETTERS
 
     public Long getId() {
         return id;

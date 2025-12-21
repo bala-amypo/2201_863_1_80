@@ -24,22 +24,16 @@ public class UserAccount {
 
     private LocalDateTime createdAt;
 
+    @PrePersist
+    public void prePersist() {
+        createdAt = LocalDateTime.now();
+        if (role == null) {
+            role = "REVIEWER";
+        }
+    }
+
     public UserAccount() {}
 
-    public UserAccount(Long id, String fullName, String email, String password, String role, String department, LocalDateTime createdAt) {
-        this.id = id;
-        this.fullName = fullName;
-        this.email = email;
-        this.password = password;
-        this.role = role;
-        this.department = department;
-        this.createdAt = createdAt;
-    }
-
-    @PrePersist
-    protected void onCreate() {
-        createdAt = LocalDateTime.now();
-    }
 
     public Long getId() {
         return id;
@@ -68,31 +62,31 @@ public class UserAccount {
     public String getPassword() {
         return password;
     }
-
+ 
     public void setPassword(String password) {
         this.password = password;
     }
-
+ 
     public String getRole() {
         return role;
     }
-
+ 
     public void setRole(String role) {
         this.role = role;
     }
-
+ 
     public String getDepartment() {
         return department;
     }
-
+ 
     public void setDepartment(String department) {
         this.department = department;
     }
-
+ 
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
-
+ 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }

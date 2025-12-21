@@ -24,22 +24,14 @@ public class EventMergeRecord {
 
     private LocalDateTime createdAt;
 
-    public EventMergeRecord() {}
-
-    public EventMergeRecord(Long id, String sourceEventIds, String mergedTitle, LocalDate mergedStartDate, LocalDate mergedEndDate, String mergeReason, LocalDateTime createdAt) {
-        this.id = id;
-        this.sourceEventIds = sourceEventIds;
-        this.mergedTitle = mergedTitle;
-        this.mergedStartDate = mergedStartDate;
-        this.mergedEndDate = mergedEndDate;
-        this.mergeReason = mergeReason;
-        this.createdAt = createdAt;
-    }
-
     @PrePersist
-    protected void onCreate() {
+    public void prePersist() {
         createdAt = LocalDateTime.now();
     }
+
+    public EventMergeRecord() {}
+
+   
 
     public Long getId() {
         return id;
