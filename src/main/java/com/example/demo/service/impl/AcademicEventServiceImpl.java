@@ -18,32 +18,31 @@ public class AcademicEventServiceImpl implements AcademicEventService {
     }
 
     @Override
-    public AcademicEvent createEvent(AcademicEvent event) {
+    public AcademicEvent create(AcademicEvent event) {
         return repo.save(event);
     }
 
     @Override
-    public AcademicEvent updateEvent(Long id, AcademicEvent event) {
-        AcademicEvent existing = getEventById(id);
-        existing.setTitle(event.getTitle());
+    public AcademicEvent update(Long id, AcademicEvent event) {
+        AcademicEvent existing = repo.findById(id).orElseThrow();
+        existing.setEventName(event.getEventName());
         existing.setEventDate(event.getEventDate());
         existing.setBranch(event.getBranch());
         return repo.save(existing);
     }
 
     @Override
-    public AcademicEvent getEventById(Long id) {
-        return repo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Event not found"));
+    public AcademicEvent getById(Long id) {
+        return repo.findById(id).orElseThrow();
     }
 
     @Override
-    public List<AcademicEvent> getAllEvents() {
+    public List<AcademicEvent> getAll() {
         return repo.findAll();
     }
 
     @Override
-    public List<AcademicEvent> getEventsByBranch(Long branchId) {
+    public List<AcademicEvent> getByBranch(Long branchId) {
         return repo.findByBranchId(branchId);
     }
 }
