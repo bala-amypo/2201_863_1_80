@@ -1,54 +1,52 @@
 package com.example.demo.entity;
 
-import java.time.LocalDate;
-
 import jakarta.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "academic_events")
 public class AcademicEvent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String eventName;
+    private Long branchId;
+    private String title;
+    private String eventType;
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private String location;
+    private String description;
+    private LocalDateTime submittedAt;
 
-    private LocalDate eventDate;
-
-    @ManyToOne
-    @JoinColumn(name = "branch_id")
-    private BranchProfile branch;
-
-
-    public Long getId() {
-        return id;
+    @PrePersist
+    public void prePersist() {
+        submittedAt = LocalDateTime.now();
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public String getEventName() {
-        return eventName;
-    }
+    public Long getBranchId() { return branchId; }
+    public void setBranchId(Long branchId) { this.branchId = branchId; }
 
-    public void setEventName(String eventName) {
-        this.eventName = eventName;
-    }
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
 
-    public LocalDate getEventDate() {
-        return eventDate;
-    }
+    public String getEventType() { return eventType; }
+    public void setEventType(String eventType) { this.eventType = eventType; }
 
-    public void setEventDate(LocalDate eventDate) {
-        this.eventDate = eventDate;
-    }
+    public LocalDate getStartDate() { return startDate; }
+    public void setStartDate(LocalDate startDate) { this.startDate = startDate; }
 
-    public BranchProfile getBranch() {
-        return branch;
-    }
+    public LocalDate getEndDate() { return endDate; }
+    public void setEndDate(LocalDate endDate) { this.endDate = endDate; }
 
-    public void setBranch(BranchProfile branch) {
-        this.branch = branch;
-    }
+    public String getLocation() { return location; }
+    public void setLocation(String location) { this.location = location; }
+
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
 }

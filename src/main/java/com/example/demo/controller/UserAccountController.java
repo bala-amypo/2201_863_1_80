@@ -1,14 +1,15 @@
 package com.example.demo.controller;
 
-import java.util.List;
-
-import org.springframework.web.bind.annotation.*;
-
 import com.example.demo.entity.UserAccount;
 import com.example.demo.service.UserAccountService;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/auth")
+@Tag(name = "Authentication")
 public class UserAccountController {
 
     private final UserAccountService service;
@@ -22,18 +23,13 @@ public class UserAccountController {
         return service.register(user);
     }
 
-    @PostMapping("/login")
-    public String login(@RequestBody UserAccount user) {
-        return "LOGIN SUCCESS (JWT SKIPPED FOR REVIEW)";
-    }
-
     @GetMapping("/users")
     public List<UserAccount> getAll() {
         return service.getAllUsers();
     }
 
     @GetMapping("/users/{id}")
-    public UserAccount getById(@PathVariable Long id) {
+    public UserAccount get(@PathVariable Long id) {
         return service.getUser(id);
     }
 }
