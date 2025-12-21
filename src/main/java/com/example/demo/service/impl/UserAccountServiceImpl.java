@@ -1,12 +1,12 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.entity.UserAccount;
-import com.example.demo.exception.*;
-import com.example.demo.repository.UserAccountRepository;
-import com.example.demo.service.UserAccountService;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import com.example.demo.entity.UserAccount;
+import com.example.demo.repository.UserAccountRepository;
+import com.example.demo.service.UserAccountService;
 
 @Service
 public class UserAccountServiceImpl implements UserAccountService {
@@ -18,35 +18,24 @@ public class UserAccountServiceImpl implements UserAccountService {
     }
 
     @Override
-    public UserAccount create(UserAccount user) {
-        if (repo.existsByEmail(user.getEmail())) {
-            throw new ValidationException("Email already in use");
-        }
+    public UserAccount register(UserAccount user) {
         return repo.save(user);
     }
 
     @Override
-    public UserAccount getById(Long id) {
-        return repo.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+    public UserAccount findByEmail(String email) {
+        return repo.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
     }
 
     @Override
-    public List<UserAccount> getAll() {
+    public List<UserAccount> getAllUsers() {
         return repo.findAll();
     }
 
     @Override
-    public UserAccount update(Long id, UserAccount user) {
-        UserAccount existing = getById(id);
-        existing.setFullName(user.getFullName());
-        existing.setDepartment(user.getDepartment());
-        existing.setRole(user.getRole());
-        return repo.save(existing);
-    }
-
-    @Override
-    public void delete(Long id) {
-        repo.delete(getById(id));
+    public UserAccount getUser(Long id) {
+        return repo.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
     }
 }

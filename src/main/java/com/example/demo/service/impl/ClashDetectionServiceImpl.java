@@ -1,12 +1,12 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.entity.ClashRecord;
-import com.example.demo.exception.ResourceNotFoundException;
-import com.example.demo.repository.ClashRecordRepository;
-import com.example.demo.service.ClashDetectionService;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import com.example.demo.entity.ClashRecord;
+import com.example.demo.repository.ClashRecordRepository;
+import com.example.demo.service.ClashDetectionService;
 
 @Service
 public class ClashDetectionServiceImpl implements ClashDetectionService {
@@ -17,26 +17,32 @@ public class ClashDetectionServiceImpl implements ClashDetectionService {
         this.repo = repo;
     }
 
-    public ClashRecord create(ClashRecord clash) {
+    @Override
+    public ClashRecord logClash(ClashRecord clash) {
+        clash.setResolved(false);
         return repo.save(clash);
     }
 
-    public ClashRecord resolve(Long id) {
-        ClashRecord clash = getById(id);
+    @Override
+    public ClashRecord resolveClash(Long id) {
+        ClashRecord clash = repo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Clash not found"));
         clash.setResolved(true);
         return repo.save(clash);
     }
 
-    public ClashRecord getById(Long id) {
-        return repo.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Clash not found"));
+    @Override
+    public List<ClashRecord> getClashesForEvent(Long eventId) {
+        return repo.findByEventId(eventId);
     }
 
-    public List<ClashRecord> getAll() {
-        return repo.findAll();
-    }
-
-    public List<ClashRecord> getUnresolved() {
+    @Override
+    public List<ClashRecord> getUnresolvedClashes() {
         return repo.findByResolvedFalse();
+    }
+
+    @Override
+    public List<ClashRecord> getAllClashes() {
+        return repo.findAll();
     }
 }
