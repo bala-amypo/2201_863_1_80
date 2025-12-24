@@ -2,30 +2,34 @@ package com.example.demo.security;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
-import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.security.Key;
+import javax.crypto.SecretKey;
 import java.util.Date;
 
 @Component
 public class JwtUtil {
 
-    private final String secretKey = "MySecretKeyForJwtGenerationMySecretKey";
-    private final long expirationMillis = 86400000; // 1 day
+    private SecretKey key;
 
-    private Key key;
+    @Value("${jwt.secret}")
+    private String secret;
 
-    @PostConstruct
-    public void initKey() {
-        this.key = Keys.hmacShaKeyFor(secretKey.getBytes());
+    @Value("${jwt.expiration}")
+    private long expirationMillis;
+
+    private void initKey() {
+        this.key = Keys.hmacShaKeyFor(secret.getBytes());
     }
 
     public String generateToken(Long userId, String email, String role) {
+        initKey();
         return Jwts.builder()
-                .setSubject(email)
                 .claim("userId", userId)
+                .claim("email", email)
                 .claim("role", role)
+                .setSubject(email)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expirationMillis))
                 .signWith(key, SignatureAlgorithm.HS256)
@@ -33,6 +37,7 @@ public class JwtUtil {
     }
 
     public Claims validateToken(String token) {
+        initKey();
         return Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()
@@ -41,7 +46,7 @@ public class JwtUtil {
     }
 
     public String extractEmail(String token) {
-        return validateToken(token).getSubject();
+        return validateToken(token).get("email", String.class);
     }
 
     public Long extractUserId(String token) {
