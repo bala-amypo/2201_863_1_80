@@ -15,46 +15,52 @@ import java.util.stream.Collectors;
 @Service
 public class EventMergeServiceImpl implements EventMergeService {
 
-    private final EventMergeRecordRepository mergeRepo;
-    private final AcademicEventRepository eventRepo;
+    private final EventMergeRecordRepository eventMergeRecordRepository;
+    private final AcademicEventRepository academicEventRepository;
 
-    public EventMergeServiceImpl(EventMergeRecordRepository mergeRepo,
-                                 AcademicEventRepository eventRepo) {
-        this.mergeRepo = mergeRepo;
-        this.eventRepo = eventRepo;
+    public EventMergeServiceImpl(EventMergeRecordRepository eventMergeRecordRepository,
+                                 AcademicEventRepository academicEventRepository) {
+        this.eventMergeRecordRepository = eventMergeRecordRepository;
+        this.academicEventRepository = academicEventRepository;
     }
 
     @Override
     public EventMergeRecord mergeEvents(List<Long> eventIds, String reason) {
+
         List<AcademicEvent> events = eventIds.stream()
-                .map(id -> eventRepo.findById(id)
+                .map(id -> academicEventRepository.findById(id)
                         .orElseThrow(() -> new ResourceNotFoundException("Event not found")))
                 .toList();
 
-        EventMergeRecord record = new EventMergeRecord();
-        record.setSourceEventIds(
-                events.stream().map(e -> e.getId().toString()).collect(Collectors.joining(",")));
-        record.setMergedTitle("Merged Events");
-        record.setMergedStartDate(events.stream().map(AcademicEvent::getStartDate).min(LocalDate::compareTo).get());
-        record.setMergedEndDate(events.stream().map(AcademicEvent::getEndDate).max(LocalDate::compareTo).get());
-        record.setMergeReason(reason);
+        LocalDate start = events.stream().map(AcademicEvent::getStartDate).min(LocalDate::compareTo).get();
+        LocalDate end = events.stream().map(AcademicEvent::getEndDate).max(LocalDate::compareTo).get();
 
-        return mergeRepo.save(record);
+        EventMergeRecord record = new EventMergeRecord(
+                null,
+                eventIds.stream().map(String::valueOf).collect(Collectors.joining(",")),
+                "Merged Events",
+                start,
+                end,
+                reason,
+                null
+        );
+
+        return eventMergeRecordRepository.save(record);
     }
 
     @Override
     public List<EventMergeRecord> getAllMergeRecords() {
-        return mergeRepo.findAll();
+        return eventMergeRecordRepository.findAll();
     }
 
     @Override
     public EventMergeRecord getMergeRecordById(Long id) {
-        return mergeRepo.findById(id)
+        return eventMergeRecordRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Merge record not found"));
     }
 
     @Override
     public List<EventMergeRecord> getMergeRecordsByDate(LocalDate start, LocalDate end) {
-        return mergeRepo.findByMergedStartDateBetween(start, end);
+        return eventMergeRecordRepository.findByMergedStartDateBetween(start, end);
     }
 }

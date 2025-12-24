@@ -12,32 +12,37 @@ import java.util.List;
 @Service
 public class HarmonizedCalendarServiceImpl implements HarmonizedCalendarService {
 
-    private final HarmonizedCalendarRepository repo;
+    private final HarmonizedCalendarRepository harmonizedCalendarRepository;
 
-    public HarmonizedCalendarServiceImpl(HarmonizedCalendarRepository repo) {
-        this.repo = repo;
+    public HarmonizedCalendarServiceImpl(HarmonizedCalendarRepository harmonizedCalendarRepository) {
+        this.harmonizedCalendarRepository = harmonizedCalendarRepository;
     }
 
+    @Override
     public HarmonizedCalendar generateHarmonizedCalendar(String title, String generatedBy) {
-        HarmonizedCalendar cal = new HarmonizedCalendar();
-        cal.setTitle(title);
-        cal.setGeneratedBy(generatedBy);
-        cal.setEffectiveFrom(LocalDate.now());
-        cal.setEffectiveTo(LocalDate.now().plusMonths(6));
-        cal.setEventsJson("[]");
-        return repo.save(cal);
+        HarmonizedCalendar calendar = new HarmonizedCalendar();
+        calendar.setEventsJson("[]");
+        calendar.setEffectiveFrom(LocalDate.now());
+        calendar.setEffectiveTo(LocalDate.now().plusMonths(6));
+        calendar.setGeneratedBy(generatedBy);
+        calendar.setTitle(title);
+        return harmonizedCalendarRepository.save(calendar);
     }
 
+    @Override
     public HarmonizedCalendar getCalendarById(Long id) {
-        return repo.findById(id)
+        return harmonizedCalendarRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Calendar not found"));
     }
 
+    @Override
     public List<HarmonizedCalendar> getAllCalendars() {
-        return repo.findAll();
+        return harmonizedCalendarRepository.findAll();
     }
 
+    @Override
     public List<HarmonizedCalendar> getCalendarsWithinRange(LocalDate start, LocalDate end) {
-        return repo.findByEffectiveFromLessThanEqualAndEffectiveToGreaterThanEqual(start, end);
+        return harmonizedCalendarRepository
+                .findByEffectiveFromLessThanEqualAndEffectiveToGreaterThanEqual(start, end);
     }
 }
