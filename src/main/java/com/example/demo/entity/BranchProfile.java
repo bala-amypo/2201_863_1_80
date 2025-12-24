@@ -43,7 +43,6 @@ public class BranchProfile {
         }
     }
 
-    // Getters and Setters
 
     public Long getId() {
         return id;

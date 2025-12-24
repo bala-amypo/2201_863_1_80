@@ -44,7 +44,7 @@ public class EventMergeRecord {
         this.createdAt = LocalDateTime.now();
     }
 
-    // Getters
+    
 
     public Long getId() {
         return id;

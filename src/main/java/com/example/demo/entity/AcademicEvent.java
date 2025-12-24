@@ -50,8 +50,7 @@ public class AcademicEvent {
         this.submittedAt = LocalDateTime.now();
     }
 
-    // Getters and Setters
-
+    
     public Long getId() {
         return id;
     }
