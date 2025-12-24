@@ -46,8 +46,9 @@ public class HarmonizedCalendar {
         this.generatedAt = LocalDateTime.now();
     }
 
-    
-
+    // =====================
+    // GETTERS
+    // =====================
     public Long getId() {
         return id;
     }
@@ -68,20 +69,29 @@ public class HarmonizedCalendar {
         return effectiveFrom;
     }
 
-    public void setEffectiveFrom(LocalDate effectiveFrom) {
-        this.effectiveFrom = effectiveFrom;
-    }
-
     public LocalDate getEffectiveTo() {
         return effectiveTo;
     }
 
-    public void setEffectiveTo(LocalDate effectiveTo) {
-        this.effectiveTo = effectiveTo;
-    }
-
     public String getEventsJson() {
         return eventsJson;
+    }
+
+    
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setGeneratedBy(String generatedBy) {
+        this.generatedBy = generatedBy;
+    }
+
+    public void setEffectiveFrom(LocalDate effectiveFrom) {
+        this.effectiveFrom = effectiveFrom;
+    }
+
+    public void setEffectiveTo(LocalDate effectiveTo) {
+        this.effectiveTo = effectiveTo;
     }
 
     public void setEventsJson(String eventsJson) {
