@@ -27,12 +27,8 @@ public class UserAccountController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    // =========================
-    // REGISTER
-    // =========================
     @PostMapping("/register")
     public ApiResponse register(@RequestBody RegisterRequest request) {
-
         UserAccount user = new UserAccount();
         user.setFullName(request.getName());
         user.setEmail(request.getEmail());
@@ -40,16 +36,10 @@ public class UserAccountController {
         user.setRole(request.getRole());
         user.setDepartment(request.getDepartment());
 
-        return new ApiResponse(
-                true,
-                "User registered",
-                userAccountService.register(user)
-        );
+        return new ApiResponse(true, "User registered",
+                userAccountService.register(user));
     }
 
-    // =========================
-    // LOGIN
-    // =========================
     @PostMapping("/login")
     public ApiResponse login(@RequestBody LoginRequest request) {
 
@@ -65,37 +55,19 @@ public class UserAccountController {
                 user.getRole()
         );
 
-        return new ApiResponse(
-                true,
-                "Login successful",
-                Map.of(
-                        "token", token,
-                        "user", user
-                )
-        );
+        return new ApiResponse(true, "Login successful",
+                Map.of("token", token, "user", user));
     }
 
-    // =========================
-    // GET ALL USERS (ADMIN)
-    // =========================
     @GetMapping("/users")
     public ApiResponse getAllUsers() {
-        return new ApiResponse(
-                true,
-                "Users fetched",
-                userAccountService.getAllUsers()
-        );
+        return new ApiResponse(true, "Users fetched",
+                userAccountService.getAllUsers());
     }
 
-    // =========================
-    // GET USER BY ID (ADMIN)
-    // =========================
     @GetMapping("/users/{id}")
     public ApiResponse getUser(@PathVariable Long id) {
-        return new ApiResponse(
-                true,
-                "User fetched",
-                userAccountService.getUser(id)
-        );
+        return new ApiResponse(true, "User fetched",
+                userAccountService.getUser(id));
     }
 }

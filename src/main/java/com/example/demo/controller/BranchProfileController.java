@@ -1,36 +1,44 @@
+package com.example.demo.controller;
+
+import com.example.demo.entity.BranchProfile;
+import com.example.demo.service.BranchProfileService;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/branches")
 public class BranchProfileController {
 
-    private final BranchProfileService service;
+    private final BranchProfileService branchProfileService;
 
-    public BranchProfileController(BranchProfileService service) {
-        this.service = service;
+    public BranchProfileController(BranchProfileService branchProfileService) {
+        this.branchProfileService = branchProfileService;
     }
 
     @PostMapping
-    public BranchProfile create(@RequestBody BranchProfile branch) {
-        return service.createBranch(branch);
+    public BranchProfile createBranch(@RequestBody BranchProfile branch) {
+        return branchProfileService.createBranch(branch);
     }
 
     @PutMapping("/{id}/status")
-    public BranchProfile update(@PathVariable Long id,
-                                @RequestParam boolean active) {
-        return service.updateBranchStatus(id, active);
+    public BranchProfile updateStatus(@PathVariable Long id,
+                                      @RequestParam boolean active) {
+        return branchProfileService.updateBranchStatus(id, active);
     }
 
     @GetMapping("/{id}")
-    public BranchProfile get(@PathVariable Long id) {
-        return service.getBranchById(id);
+    public BranchProfile getBranch(@PathVariable Long id) {
+        return branchProfileService.getBranchById(id);
     }
 
     @GetMapping
-    public List<BranchProfile> getAll() {
-        return service.getAllBranches();
+    public List<BranchProfile> getAllBranches() {
+        return branchProfileService.getAllBranches();
     }
 
     @GetMapping("/lookup/{branchCode}")
-    public BranchProfile getByCode(@PathVariable String branchCode) {
-        return service.findByBranchCode(branchCode);
+    public BranchProfile getByBranchCode(@PathVariable String branchCode) {
+        return branchProfileService.findByBranchCode(branchCode);
     }
 }
