@@ -1,15 +1,5 @@
-package com.example.demo.controller;
-
-import com.example.demo.entity.BranchProfile;
-import com.example.demo.service.BranchProfileService;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-
 @RestController
 @RequestMapping("/api/branches")
-@Tag(name = "Branch Profiles")
 public class BranchProfileController {
 
     private final BranchProfileService service;
@@ -24,13 +14,13 @@ public class BranchProfileController {
     }
 
     @PutMapping("/{id}/status")
-    public BranchProfile updateStatus(@PathVariable Long id,
-                                      @RequestParam boolean active) {
+    public BranchProfile update(@PathVariable Long id,
+                                @RequestParam boolean active) {
         return service.updateBranchStatus(id, active);
     }
 
     @GetMapping("/{id}")
-    public BranchProfile getById(@PathVariable Long id) {
+    public BranchProfile get(@PathVariable Long id) {
         return service.getBranchById(id);
     }
 
