@@ -15,15 +15,11 @@ public class BranchProfile {
     private String branchCode;
 
     private String branchName;
-
     private String contactEmail;
-
     private LocalDateTime lastSyncAt;
-
     private Boolean active;
 
-    public BranchProfile() {
-    }
+    public BranchProfile() {}
 
     public BranchProfile(Long id, String branchCode, String branchName,
                          String contactEmail, LocalDateTime lastSyncAt, Boolean active) {
@@ -38,49 +34,18 @@ public class BranchProfile {
     @PrePersist
     public void onCreate() {
         this.lastSyncAt = LocalDateTime.now();
-        if (this.active == null) {
-            this.active = true;
-        }
+        if (this.active == null) this.active = true;
     }
 
+    public Long getId() { return id; }
+    public String getBranchCode() { return branchCode; }
+    public String getBranchName() { return branchName; }
+    public String getContactEmail() { return contactEmail; }
+    public LocalDateTime getLastSyncAt() { return lastSyncAt; }
+    public Boolean getActive() { return active; }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getBranchCode() {
-        return branchCode;
-    }
-
-    public void setBranchCode(String branchCode) {
-        this.branchCode = branchCode;
-    }
-
-    public String getBranchName() {
-        return branchName;
-    }
-
-    public void setBranchName(String branchName) {
-        this.branchName = branchName;
-    }
-
-    public String getContactEmail() {
-        return contactEmail;
-    }
-
-    public void setContactEmail(String contactEmail) {
-        this.contactEmail = contactEmail;
-    }
-
-    public LocalDateTime getLastSyncAt() {
-        return lastSyncAt;
-    }
-
-    public Boolean getActive() {
-        return active;
-    }
-
-    public void setActive(Boolean active) {
-        this.active = active;
-    }
+    public void setBranchCode(String branchCode) { this.branchCode = branchCode; }
+    public void setBranchName(String branchName) { this.branchName = branchName; }
+    public void setContactEmail(String contactEmail) { this.contactEmail = contactEmail; }
+    public void setActive(Boolean active) { this.active = active; }
 }

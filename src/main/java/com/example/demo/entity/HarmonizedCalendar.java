@@ -46,9 +46,7 @@ public class HarmonizedCalendar {
         this.generatedAt = LocalDateTime.now();
     }
 
-    // =====================
-    // GETTERS
-    // =====================
+    
     public Long getId() {
         return id;
     }
