@@ -51,10 +51,13 @@ public class AcademicEvent {
         this.submittedAt = LocalDateTime.now();
     }
 
-    // Getters and Setters
-
+    
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getBranchId() {
@@ -68,7 +71,7 @@ public class AcademicEvent {
     public String getTitle() {
         return title;
     }
-    
+
     public void setTitle(String title) {
         this.title = title;
     }
@@ -76,7 +79,7 @@ public class AcademicEvent {
     public String getEventType() {
         return eventType;
     }
-    
+
     public void setEventType(String eventType) {
         this.eventType = eventType;
     }
@@ -84,7 +87,7 @@ public class AcademicEvent {
     public LocalDate getStartDate() {
         return startDate;
     }
-    
+
     public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
@@ -92,7 +95,7 @@ public class AcademicEvent {
     public LocalDate getEndDate() {
         return endDate;
     }
-    
+
     public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
@@ -100,7 +103,7 @@ public class AcademicEvent {
     public String getLocation() {
         return location;
     }
-    
+
     public void setLocation(String location) {
         this.location = location;
     }
@@ -108,7 +111,7 @@ public class AcademicEvent {
     public String getDescription() {
         return description;
     }
-    
+
     public void setDescription(String description) {
         this.description = description;
     }
