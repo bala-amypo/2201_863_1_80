@@ -1,35 +1,48 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.ApiResponse;
-import com.example.demo.dto.LoginRequest;
-import com.example.demo.dto.RegisterRequest;
-import com.example.demo.service.UserAccountService;
+import com.example.demo.entity.AcademicEvent;
+import com.example.demo.service.AcademicEventService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/api/auth")
-public class AuthController {
+@RequestMapping("/api/events")
+public class AcademicEventController {
 
-    private final UserAccountService service;
+    private final AcademicEventService service;
 
-    public AuthController(UserAccountService service) {
+    public AcademicEventController(AcademicEventService service) {
         this.service = service;
     }
 
-    @PostMapping("/register")
-    public ApiResponse register(
-            @Valid @RequestBody RegisterRequest request) {
-
-        service.register(request);
-        return new ApiResponse(true, "User registered successfully");
+    @PostMapping
+    public AcademicEvent createEvent(
+            @Valid @RequestBody AcademicEvent event) {
+        return service.createEvent(event);
     }
 
-    @PostMapping("/login")
-    public ApiResponse login(
-            @Valid @RequestBody LoginRequest request) {
+    @PutMapping("/{id}")
+    public AcademicEvent updateEvent(
+            @PathVariable Long id,
+            @Valid @RequestBody AcademicEvent event) {
+        return service.updateEvent(id, event);
+    }
 
-        String token = service.login(request);
-        return new ApiResponse(true, "Login successful", token);
+    @GetMapping("/{id}")
+    public AcademicEvent getEvent(@PathVariable Long id) {
+        return service.getEventById(id);
+    }
+
+    @GetMapping
+    public List<AcademicEvent> getAllEvents() {
+        return service.getAllEvents();
+    }
+
+    @GetMapping("/branch/{branchId}")
+    public List<AcademicEvent> getByBranch(
+            @PathVariable Long branchId) {
+        return service.getEventsByBranch(branchId);
     }
 }

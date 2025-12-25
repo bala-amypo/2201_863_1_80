@@ -16,28 +16,9 @@ public class ClashRecordController {
         this.service = service;
     }
 
-    @PostMapping
-    public ClashRecord create(@RequestBody ClashRecord clash) {
-        return service.logClash(clash);
-    }
-
-    @PutMapping("/{id}/resolve")
-    public ClashRecord resolve(@PathVariable Long id) {
-        return service.resolveClash(id);
-    }
-
-    @GetMapping("/event/{eventId}")
-    public List<ClashRecord> byEvent(@PathVariable Long eventId) {
-        return service.getClashesForEvent(eventId);
-    }
-
-    @GetMapping("/unresolved")
-    public List<ClashRecord> unresolved() {
-        return service.getUnresolvedClashes();
-    }
-
-    @GetMapping
-    public List<ClashRecord> all() {
-        return service.getAllClashes();
+    @GetMapping("/branch/{branchId}")
+    public List<ClashRecord> detectClashes(
+            @PathVariable Long branchId) {
+        return service.detectClashes(branchId);
     }
 }
