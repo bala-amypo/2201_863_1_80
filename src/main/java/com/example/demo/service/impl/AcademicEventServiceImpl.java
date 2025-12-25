@@ -1,6 +1,7 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.AcademicEvent;
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.AcademicEventRepository;
 import com.example.demo.service.AcademicEventService;
 import org.springframework.stereotype.Service;
@@ -31,7 +32,8 @@ public class AcademicEventServiceImpl implements AcademicEventService {
     @Override
     public AcademicEvent getEventById(Long id) {
         return repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Event not found"));
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Event not found"));
     }
 
     @Override
