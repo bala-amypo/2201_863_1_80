@@ -23,19 +23,33 @@ public class HarmonizedCalendar {
 
     public HarmonizedCalendar() {}
 
+    // ✅ REQUIRED BY TEST CASES
+    public HarmonizedCalendar(Long id,
+                              String title,
+                              String generatedBy,
+                              LocalDateTime generatedAt,
+                              LocalDate effectiveFrom,
+                              LocalDate effectiveTo,
+                              String eventsJson) {
+        this.id = id;
+        this.title = title;
+        this.generatedBy = generatedBy;
+        this.generatedAt = generatedAt;
+        this.effectiveFrom = effectiveFrom;
+        this.effectiveTo = effectiveTo;
+        this.eventsJson = eventsJson;
+    }
+
     @PrePersist
     public void onCreate() {
         this.generatedAt = LocalDateTime.now();
     }
 
-    // 🔴 REQUIRED BY TESTS
     public void prePersist() {
         onCreate();
     }
 
     public Long getId() { return id; }
-
-    // 🔴 REQUIRED BY TESTS
     public void setId(Long id) { this.id = id; }
 
     public String getTitle() { return title; }

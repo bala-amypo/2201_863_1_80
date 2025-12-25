@@ -17,9 +17,28 @@ public class ClashRecord {
     private String severity;
     private String details;
     private LocalDateTime detectedAt;
-    private Boolean resolved = false;
+    private Boolean resolved;
 
     public ClashRecord() {}
+
+    // ✅ REQUIRED BY TEST CASES
+    public ClashRecord(Long id,
+                       Long eventAId,
+                       Long eventBId,
+                       String clashType,
+                       String severity,
+                       String details,
+                       LocalDateTime detectedAt,
+                       Boolean resolved) {
+        this.id = id;
+        this.eventAId = eventAId;
+        this.eventBId = eventBId;
+        this.clashType = clashType;
+        this.severity = severity;
+        this.details = details;
+        this.detectedAt = detectedAt;
+        this.resolved = resolved;
+    }
 
     @PrePersist
     public void onCreate() {
@@ -27,14 +46,11 @@ public class ClashRecord {
         this.resolved = false;
     }
 
-    // 🔴 REQUIRED BY TESTS
     public void prePersist() {
         onCreate();
     }
 
     public Long getId() { return id; }
-
-    // 🔴 REQUIRED BY TESTS
     public void setId(Long id) { this.id = id; }
 
     public Long getEventAId() { return eventAId; }
