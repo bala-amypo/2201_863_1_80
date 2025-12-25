@@ -17,26 +17,26 @@ public class JwtUtil {
         this.key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     }
 
-    // t60
+    // Used by test t60
     public String generateToken(Map<String, Object> claims, String subject) {
         return Jwts.builder()
-                .setClaims(claims)
-                .setSubject(subject)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + expirationMillis))
+                .claims(claims)
+                .subject(subject)
+                .issuedAt(new Date())
+                .expiration(new Date(System.currentTimeMillis() + expirationMillis))
                 .signWith(key)
                 .compact();
     }
 
-    // t61+
+    // Used by tests t61–t71
     public String generateTokenForUser(UserAccount user) {
         return Jwts.builder()
                 .claim("userId", user.getId())
                 .claim("email", user.getEmail())
                 .claim("role", user.getRole())
-                .setSubject(user.getEmail())
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + expirationMillis))
+                .subject(user.getEmail())
+                .issuedAt(new Date())
+                .expiration(new Date(System.currentTimeMillis() + expirationMillis))
                 .signWith(key)
                 .compact();
     }
@@ -44,31 +44,29 @@ public class JwtUtil {
     public boolean isTokenValid(String token, String email) {
         try {
             return extractUsername(token).equals(email);
-        } catch (Exception ex) {
+        } catch (Exception e) {
             return false;
         }
     }
 
     public String extractUsername(String token) {
-        return parseToken(token).getBody().getSubject();
+        return parseToken(token).getPayload().getSubject();
     }
 
     public Long extractUserId(String token) {
-        Object val = parseToken(token).getBody().get("userId");
-        if (val instanceof Integer) {
-            return ((Integer) val).longValue();
-        }
-        return (Long) val;
+        Object val = parseToken(token).getPayload().get("userId");
+        return Long.valueOf(val.toString());
     }
 
     public String extractRole(String token) {
-        return (String) parseToken(token).getBody().get("role");
+        return parseToken(token).getPayload().get("role").toString();
     }
 
+    // IMPORTANT: test calls getPayload()
     public Jws<Claims> parseToken(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(key)
+        return Jwts.parser()
+                .verifyWith(key)
                 .build()
-                .parseClaimsJws(token);
+                .parseSignedClaims(token);
     }
 }
