@@ -30,8 +30,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             if (header != null && header.startsWith("Bearer ")) {
                 String token = header.substring(7);
-                Claims claims = jwtUtil.parseToken(token).getPayload();
 
+                Claims claims = jwtUtil.parseToken(token).getBody();
                 String email = claims.getSubject();
                 String role = (String) claims.get("role");
 
@@ -48,7 +48,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
 
         } catch (Exception ex) {
-            // Do nothing – let Spring Security block request
+            // Let Spring Security handle invalid token
         }
     }
 }

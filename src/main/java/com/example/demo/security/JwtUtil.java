@@ -17,7 +17,7 @@ public class JwtUtil {
         this.key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     }
 
-    // Used in tests t60
+    // t60
     public String generateToken(Map<String, Object> claims, String subject) {
         return Jwts.builder()
                 .setClaims(claims)
@@ -28,7 +28,7 @@ public class JwtUtil {
                 .compact();
     }
 
-    // Used in tests t61+
+    // t61+
     public String generateTokenForUser(UserAccount user) {
         return Jwts.builder()
                 .claim("userId", user.getId())
@@ -50,11 +50,11 @@ public class JwtUtil {
     }
 
     public String extractUsername(String token) {
-        return parseToken(token).getPayload().getSubject();
+        return parseToken(token).getBody().getSubject();
     }
 
     public Long extractUserId(String token) {
-        Object val = parseToken(token).getPayload().get("userId");
+        Object val = parseToken(token).getBody().get("userId");
         if (val instanceof Integer) {
             return ((Integer) val).longValue();
         }
@@ -62,7 +62,7 @@ public class JwtUtil {
     }
 
     public String extractRole(String token) {
-        return (String) parseToken(token).getPayload().get("role");
+        return (String) parseToken(token).getBody().get("role");
     }
 
     public Jws<Claims> parseToken(String token) {
