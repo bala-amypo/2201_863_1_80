@@ -17,18 +17,22 @@ public class UserAccount {
     private String email;
 
     private String password;
-
     private String role;
-
     private String department;
-
     private LocalDateTime createdAt;
 
+    // ✅ REQUIRED: No-arg constructor (tests expect this)
     public UserAccount() {
     }
 
-    public UserAccount(Long id, String fullName, String email, String password,
-                       String role, String department, LocalDateTime createdAt) {
+    // ✅ REQUIRED BY TEST CASES
+    public UserAccount(Long id,
+                       String fullName,
+                       String email,
+                       String password,
+                       String role,
+                       String department,
+                       LocalDateTime createdAt) {
         this.id = id;
         this.fullName = fullName;
         this.email = email;
@@ -38,23 +42,26 @@ public class UserAccount {
         this.createdAt = createdAt;
     }
 
+    // ✅ JPA lifecycle hook
     @PrePersist
     public void onCreate() {
         this.createdAt = LocalDateTime.now();
     }
 
-    // 🔴 REQUIRED BY TEST CASES
+    // ✅ TEST CASES CALL THIS METHOD DIRECTLY
     public void prePersist() {
         onCreate();
     }
 
+    // =====================
     // Getters and Setters
+    // =====================
 
     public Long getId() {
         return id;
     }
 
-    // 🔴 REQUIRED BY TEST CASES
+    // ✅ REQUIRED (tests call setId)
     public void setId(Long id) {
         this.id = id;
     }
@@ -70,7 +77,7 @@ public class UserAccount {
     public String getEmail() {
         return email;
     }
-    
+
     public void setEmail(String email) {
         this.email = email;
     }

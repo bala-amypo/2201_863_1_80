@@ -15,9 +15,25 @@ public class BranchProfile {
     private String branchName;
     private String contactEmail;
     private LocalDateTime lastSyncAt;
-    private Boolean active = true;
+    private Boolean active;
 
+    // ✅ REQUIRED
     public BranchProfile() {}
+
+    // ✅ REQUIRED BY TEST CASES
+    public BranchProfile(Long id,
+                         String branchCode,
+                         String branchName,
+                         String contactEmail,
+                         LocalDateTime lastSyncAt,
+                         Boolean active) {
+        this.id = id;
+        this.branchCode = branchCode;
+        this.branchName = branchName;
+        this.contactEmail = contactEmail;
+        this.lastSyncAt = lastSyncAt;
+        this.active = active;
+    }
 
     @PrePersist
     public void onCreate() {
@@ -25,14 +41,11 @@ public class BranchProfile {
         this.active = true;
     }
 
-    // 🔴 REQUIRED BY TESTS
     public void prePersist() {
         onCreate();
     }
 
     public Long getId() { return id; }
-
-    // 🔴 REQUIRED BY TESTS
     public void setId(Long id) { this.id = id; }
 
     public String getBranchCode() { return branchCode; }

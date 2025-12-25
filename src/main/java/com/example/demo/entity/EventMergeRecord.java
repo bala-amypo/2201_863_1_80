@@ -21,19 +21,33 @@ public class EventMergeRecord {
 
     public EventMergeRecord() {}
 
+    // ✅ REQUIRED BY TEST CASES
+    public EventMergeRecord(Long id,
+                            String sourceEventIds,
+                            String mergedTitle,
+                            LocalDate mergedStartDate,
+                            LocalDate mergedEndDate,
+                            String mergeReason,
+                            LocalDateTime createdAt) {
+        this.id = id;
+        this.sourceEventIds = sourceEventIds;
+        this.mergedTitle = mergedTitle;
+        this.mergedStartDate = mergedStartDate;
+        this.mergedEndDate = mergedEndDate;
+        this.mergeReason = mergeReason;
+        this.createdAt = createdAt;
+    }
+
     @PrePersist
     public void onCreate() {
         this.createdAt = LocalDateTime.now();
     }
 
-    // 🔴 REQUIRED BY TESTS
     public void prePersist() {
         onCreate();
     }
 
     public Long getId() { return id; }
-
-    // 🔴 REQUIRED BY TESTS
     public void setId(Long id) { this.id = id; }
 
     public String getSourceEventIds() { return sourceEventIds; }

@@ -21,21 +21,41 @@ public class AcademicEvent {
     private String description;
     private LocalDateTime submittedAt;
 
+    // ✅ REQUIRED: No-arg constructor
     public AcademicEvent() {}
+
+    // ✅ REQUIRED BY TEST CASES
+    public AcademicEvent(Long id,
+                         Long branchId,
+                         String title,
+                         String eventType,
+                         LocalDate startDate,
+                         LocalDate endDate,
+                         String location,
+                         String description,
+                         LocalDateTime submittedAt) {
+        this.id = id;
+        this.branchId = branchId;
+        this.title = title;
+        this.eventType = eventType;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.location = location;
+        this.description = description;
+        this.submittedAt = submittedAt;
+    }
 
     @PrePersist
     public void onCreate() {
         this.submittedAt = LocalDateTime.now();
     }
 
-    // 🔴 REQUIRED BY TESTS
+    // ✅ REQUIRED BY TESTS
     public void prePersist() {
         onCreate();
     }
 
     public Long getId() { return id; }
-
-    // 🔴 REQUIRED BY TESTS
     public void setId(Long id) { this.id = id; }
 
     public Long getBranchId() { return branchId; }
