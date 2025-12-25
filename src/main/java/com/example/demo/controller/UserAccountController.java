@@ -22,7 +22,9 @@ public class UserAccountController {
             @Valid @RequestBody RegisterRequest request) {
 
         service.register(request);
-        return new ApiResponse(true, "User registered successfully");
+        return new ApiResponse(true,
+                "User registered successfully",
+                null);
     }
 
     @PostMapping("/login")
@@ -30,6 +32,8 @@ public class UserAccountController {
             @Valid @RequestBody LoginRequest request) {
 
         String token = service.login(request);
-        return new ApiResponse(true, "Login successful", token);
+        return new ApiResponse(true,
+                "Login successful",
+                token);
     }
 }
