@@ -6,18 +6,20 @@ public class ApiResponse {
     private String message;
     private Object data;
 
-    public ApiResponse() {
-    }
-
-    public ApiResponse(boolean success, String message) {
-        this.success = success;
-        this.message = message;
-    }
+    public ApiResponse() {}
 
     public ApiResponse(boolean success, String message, Object data) {
         this.success = success;
         this.message = message;
         this.data = data;
+    }
+
+    public static ApiResponse success(Object data) {
+        return new ApiResponse(true, "SUCCESS", data);
+    }
+
+    public static ApiResponse failure(String message) {
+        return new ApiResponse(false, message, null);
     }
 
     public boolean isSuccess() {
