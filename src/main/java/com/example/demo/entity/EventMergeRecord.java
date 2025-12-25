@@ -1,98 +1,40 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.time.LocalDate;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "event_merge_records")
 public class EventMergeRecord {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String sourceEventIds;
+    @NotNull
+    private Long eventAId;
 
-    private String mergedTitle;
+    @NotNull
+    private Long eventBId;
 
-    private LocalDate mergedStartDate;
+    @NotBlank
+    private String reason;
 
-    private LocalDate mergedEndDate;
+    private LocalDateTime mergedAt = LocalDateTime.now();
 
-    private String mergeReason;
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    private LocalDateTime createdAt;
+    public Long getEventAId() { return eventAId; }
+    public void setEventAId(Long eventAId) { this.eventAId = eventAId; }
 
-    public EventMergeRecord() {
-    }
+    public Long getEventBId() { return eventBId; }
+    public void setEventBId(Long eventBId) { this.eventBId = eventBId; }
 
-    public EventMergeRecord(Long id, String sourceEventIds, String mergedTitle,
-                            LocalDate mergedStartDate, LocalDate mergedEndDate,
-                            String mergeReason, LocalDateTime createdAt) {
-        this.id = id;
-        this.sourceEventIds = sourceEventIds;
-        this.mergedTitle = mergedTitle;
-        this.mergedStartDate = mergedStartDate;
-        this.mergedEndDate = mergedEndDate;
-        this.mergeReason = mergeReason;
-        this.createdAt = createdAt;
-    }
+    public String getReason() { return reason; }
+    public void setReason(String reason) { this.reason = reason; }
 
-    @PrePersist
-    public void prePersist() {
-        this.createdAt = LocalDateTime.now();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getSourceEventIds() {
-        return sourceEventIds;
-    }
-
-    public void setSourceEventIds(String sourceEventIds) {
-        this.sourceEventIds = sourceEventIds;
-    }
-
-    public String getMergedTitle() {
-        return mergedTitle;
-    }
-
-    public void setMergedTitle(String mergedTitle) {
-        this.mergedTitle = mergedTitle;
-    }
-
-    public LocalDate getMergedStartDate() {
-        return mergedStartDate;
-    }
-
-    public void setMergedStartDate(LocalDate mergedStartDate) {
-        this.mergedStartDate = mergedStartDate;
-    }
-
-    public LocalDate getMergedEndDate() {
-        return mergedEndDate;
-    }
-
-    public void setMergedEndDate(LocalDate mergedEndDate) {
-        this.mergedEndDate = mergedEndDate;
-    }
-
-    public String getMergeReason() {
-        return mergeReason;
-    }
-
-    public void setMergeReason(String mergeReason) {
-        this.mergeReason = mergeReason;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
+    public LocalDateTime getMergedAt() { return mergedAt; }
 }
