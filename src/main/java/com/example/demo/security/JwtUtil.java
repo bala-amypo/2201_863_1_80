@@ -17,7 +17,6 @@ public class JwtUtil {
         this.key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     }
 
-    /* ========== BASIC TOKEN GENERATION (TEST 60) ========== */
     public String generateToken(Map<String, Object> claims, String subject) {
         return Jwts.builder()
                 .setClaims(claims)
@@ -28,7 +27,6 @@ public class JwtUtil {
                 .compact();
     }
 
-    /* ========== USER-BASED TOKEN (TESTS 61,69,70,71) ========== */
     public String generateTokenForUser(UserAccount user) {
         return Jwts.builder()
                 .claim("userId", user.getId())
@@ -41,7 +39,6 @@ public class JwtUtil {
                 .compact();
     }
 
-    /* ========== EXTRACTION METHODS ========== */
     public String extractUsername(String token) {
         return parseToken(token).getBody().getSubject();
     }
@@ -55,7 +52,6 @@ public class JwtUtil {
         return id == null ? null : Long.valueOf(id.toString());
     }
 
-    /* ========== VALIDATION (TESTS 62,63) ========== */
     public boolean isTokenValid(String token, String username) {
         try {
             return extractUsername(token).equals(username)
@@ -65,11 +61,16 @@ public class JwtUtil {
         }
     }
 
-    /* ========== RAW PARSER (TESTS 69–72) ========== */
+    // ===== REQUIRED BY TESTS =====
     public Jws<Claims> parseToken(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()
                 .parseClaimsJws(token);
+    }
+
+    // 🔥 TEST EXPECTS getPayload()
+    public Claims getPayload(String token) {
+        return parseToken(token).getBody();
     }
 }

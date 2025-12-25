@@ -25,19 +25,6 @@ public class ClashRecord {
     public ClashRecord() {
     }
 
-    public ClashRecord(Long id, Long eventAId, Long eventBId,
-                       String clashType, String severity, String details,
-                       LocalDateTime detectedAt, Boolean resolved) {
-        this.id = id;
-        this.eventAId = eventAId;
-        this.eventBId = eventBId;
-        this.clashType = clashType;
-        this.severity = severity;
-        this.details = details;
-        this.detectedAt = detectedAt;
-        this.resolved = resolved;
-    }
-
     @PrePersist
     public void prePersist() {
         this.detectedAt = LocalDateTime.now();
@@ -45,6 +32,8 @@ public class ClashRecord {
             this.resolved = false;
         }
     }
+
+    // ===== GETTERS =====
 
     public Long getId() {
         return id;
@@ -76,6 +65,32 @@ public class ClashRecord {
 
     public Boolean getResolved() {
         return resolved;
+    }
+
+    // ===== SETTERS (🔥 REQUIRED BY TESTS) =====
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setEventAId(Long eventAId) {
+        this.eventAId = eventAId;
+    }
+
+    public void setEventBId(Long eventBId) {
+        this.eventBId = eventBId;
+    }
+
+    public void setClashType(String clashType) {
+        this.clashType = clashType;
+    }
+
+    public void setSeverity(String severity) {
+        this.severity = severity;
+    }
+
+    public void setDetails(String details) {
+        this.details = details;
     }
 
     public void setResolved(Boolean resolved) {
