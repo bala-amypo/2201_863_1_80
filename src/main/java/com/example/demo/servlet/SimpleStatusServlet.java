@@ -6,17 +6,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(name = "SimpleStatusServlet", urlPatterns = "/status")
+@WebServlet(urlPatterns = "/status")
 public class SimpleStatusServlet extends HttpServlet {
 
     @Override
-    protected void doGet(
-            HttpServletRequest req,
-            HttpServletResponse resp
-    ) throws IOException {
-
-        resp.setStatus(HttpServletResponse.SC_OK);
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("text/plain");
-        resp.getWriter().write("Servlet Alive");
+        resp.getWriter().write("OK");
     }
 }
