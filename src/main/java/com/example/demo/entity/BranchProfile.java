@@ -11,29 +11,13 @@ public class BranchProfile {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
     private String branchCode;
-
     private String branchName;
-
     private String contactEmail;
-
     private LocalDateTime lastSyncAt;
-
     private Boolean active = true;
 
-    public BranchProfile() {
-    }
-
-    public BranchProfile(Long id, String branchCode, String branchName,
-                         String contactEmail, LocalDateTime lastSyncAt, Boolean active) {
-        this.id = id;
-        this.branchCode = branchCode;
-        this.branchName = branchName;
-        this.contactEmail = contactEmail;
-        this.lastSyncAt = lastSyncAt;
-        this.active = active;
-    }
+    public BranchProfile() {}
 
     @PrePersist
     public void onCreate() {
@@ -41,45 +25,27 @@ public class BranchProfile {
         this.active = true;
     }
 
-    // Getters and Setters
-
-    public Long getId() {
-        return id;
+    // 🔴 REQUIRED BY TESTS
+    public void prePersist() {
+        onCreate();
     }
 
-    public String getBranchCode() {
-        return branchCode;
-    }
+    public Long getId() { return id; }
 
-    public void setBranchCode(String branchCode) {
-        this.branchCode = branchCode;
-    }
+    // 🔴 REQUIRED BY TESTS
+    public void setId(Long id) { this.id = id; }
 
-    public String getBranchName() {
-        return branchName;
-    }
-    
-    public void setBranchName(String branchName) {
-        this.branchName = branchName;
-    }
+    public String getBranchCode() { return branchCode; }
+    public void setBranchCode(String branchCode) { this.branchCode = branchCode; }
 
-    public String getContactEmail() {
-        return contactEmail;
-    }
-    
-    public void setContactEmail(String contactEmail) {
-        this.contactEmail = contactEmail;
-    }
+    public String getBranchName() { return branchName; }
+    public void setBranchName(String branchName) { this.branchName = branchName; }
 
-    public LocalDateTime getLastSyncAt() {
-        return lastSyncAt;
-    }
+    public String getContactEmail() { return contactEmail; }
+    public void setContactEmail(String contactEmail) { this.contactEmail = contactEmail; }
 
-    public Boolean getActive() {
-        return active;
-    }
-    
-    public void setActive(Boolean active) {
-        this.active = active;
-    }
+    public LocalDateTime getLastSyncAt() { return lastSyncAt; }
+
+    public Boolean getActive() { return active; }
+    public void setActive(Boolean active) { this.active = active; }
 }
