@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/events")
+@RequestMapping("/api/events")
 public class AcademicEventController {
 
     private final AcademicEventService service;
@@ -23,11 +23,21 @@ public class AcademicEventController {
 
     @GetMapping("/{id}")
     public AcademicEvent getById(@PathVariable Long id) {
-        return service.getById(id);
+        return service.getEventById(id);
     }
 
     @GetMapping("/branch/{branchId}")
     public List<AcademicEvent> getByBranch(@PathVariable Long branchId) {
-        return service.getByBranchId(branchId);
+        return service.getEventsByBranch(branchId);
+    }
+
+    @GetMapping
+    public List<AcademicEvent> getAll() {
+        return service.getAllEvents();
+    }
+
+    @PutMapping("/{id}")
+    public AcademicEvent update(@PathVariable Long id, @RequestBody AcademicEvent event) {
+        return service.updateEvent(id, event);
     }
 }

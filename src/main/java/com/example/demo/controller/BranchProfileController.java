@@ -4,8 +4,10 @@ import com.example.demo.entity.BranchProfile;
 import com.example.demo.service.BranchProfileService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/branches")
+@RequestMapping("/api/branches")
 public class BranchProfileController {
 
     private final BranchProfileService service;
@@ -15,12 +17,23 @@ public class BranchProfileController {
     }
 
     @PostMapping
-    public BranchProfile save(@RequestBody BranchProfile branch) {
-        return service.save(branch);
+    public BranchProfile create(@RequestBody BranchProfile branch) {
+        return service.createBranch(branch);
     }
 
     @GetMapping("/{id}")
-    public BranchProfile get(@PathVariable Long id) {
-        return service.getById(id);
+    public BranchProfile getById(@PathVariable Long id) {
+        return service.getBranchById(id);
+    }
+
+    @GetMapping
+    public List<BranchProfile> getAll() {
+        return service.getAllBranches();
+    }
+
+    @PutMapping("/{id}/status")
+    public BranchProfile updateStatus(@PathVariable Long id,
+                                      @RequestParam boolean active) {
+        return service.updateBranchStatus(id, active);
     }
 }
