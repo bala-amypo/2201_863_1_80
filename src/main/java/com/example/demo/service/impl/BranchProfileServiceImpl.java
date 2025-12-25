@@ -6,23 +6,44 @@ import com.example.demo.repository.BranchProfileRepository;
 import com.example.demo.service.BranchProfileService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class BranchProfileServiceImpl implements BranchProfileService {
 
-    private final BranchProfileRepository repository;
+    private final BranchProfileRepository branchProfileRepository;
 
-    public BranchProfileServiceImpl(BranchProfileRepository repository) {
-        this.repository = repository;
+    public BranchProfileServiceImpl(BranchProfileRepository branchProfileRepository) {
+        this.branchProfileRepository = branchProfileRepository;
     }
 
     @Override
-    public BranchProfile save(BranchProfile branch) {
-        return repository.save(branch);
+    public BranchProfile createBranch(BranchProfile branch) {
+        return branchProfileRepository.save(branch);
     }
 
     @Override
-    public BranchProfile getById(Long id) {
-        return repository.findById(id)
+    public BranchProfile updateBranchStatus(Long id, boolean active) {
+        BranchProfile branch = branchProfileRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Branch not found"));
+        branch.setActive(active);
+        return branchProfileRepository.save(branch);
+    }
+
+    @Override
+    public List<BranchProfile> getAllBranches() {
+        return branchProfileRepository.findAll();
+    }
+
+    @Override
+    public BranchProfile getBranchById(Long id) {
+        return branchProfileRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Branch not found"));
+    }
+
+    @Override
+    public BranchProfile findByBranchCode(String branchCode) {
+        return branchProfileRepository.findByBranchCode(branchCode)
                 .orElseThrow(() -> new ResourceNotFoundException("Branch not found"));
     }
 }
