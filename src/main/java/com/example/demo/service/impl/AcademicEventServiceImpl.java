@@ -6,6 +6,8 @@ import com.example.demo.repository.AcademicEventRepository;
 
 import java.util.List;
 
+@Service
+
 public class AcademicEventServiceImpl {
 
     private final AcademicEventRepository repository;
