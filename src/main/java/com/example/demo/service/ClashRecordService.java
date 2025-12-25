@@ -4,6 +4,5 @@ import java.util.List;
 import com.example.demo.entity.ClashRecord;
 
 public interface ClashRecordService {
-
-    List<ClashRecord> getClashesByBranch(Long branchId);
+    List<ClashRecord> getByBranch(Long branchId);
 }

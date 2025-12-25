@@ -1,8 +1,11 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.ApiResponse;
-import com.example.demo.service.ClashRecordService;
+import java.util.List;
+
 import org.springframework.web.bind.annotation.*;
+
+import com.example.demo.entity.ClashRecord;
+import com.example.demo.service.ClashRecordService;
 
 @RestController
 @RequestMapping("/api/clashes")
@@ -15,7 +18,7 @@ public class ClashRecordController {
     }
 
     @GetMapping("/branch/{branchId}")
-    public ApiResponse getByBranch(@PathVariable Long branchId) {
-        return ApiResponse.success(service.getByBranch(branchId));
+    public List<ClashRecord> getByBranch(@PathVariable Long branchId) {
+        return service.getByBranch(branchId);
     }
 }

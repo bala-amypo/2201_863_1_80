@@ -1,8 +1,11 @@
 package com.example.demo.repository;
 
-import com.example.demo.entity.ClashRecord;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ClashRecordRepository
-        extends JpaRepository<ClashRecord, Long> {
+import com.example.demo.entity.ClashRecord;
+
+public interface ClashRecordRepository extends JpaRepository<ClashRecord, Long> {
+    List<ClashRecord> findByBranchId(Long branchId);
 }

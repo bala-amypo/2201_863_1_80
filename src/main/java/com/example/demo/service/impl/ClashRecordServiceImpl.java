@@ -11,14 +11,14 @@ import com.example.demo.service.ClashRecordService;
 @Service
 public class ClashRecordServiceImpl implements ClashRecordService {
 
-    private final ClashRecordRepository clashRecordRepository;
+    private final ClashRecordRepository repository;
 
-    public ClashRecordServiceImpl(ClashRecordRepository clashRecordRepository) {
-        this.clashRecordRepository = clashRecordRepository;
+    public ClashRecordServiceImpl(ClashRecordRepository repository) {
+        this.repository = repository;
     }
 
     @Override
-    public List<ClashRecord> getClashesByBranch(Long branchId) {
-        return clashRecordRepository.findByBranchId(branchId);
+    public List<ClashRecord> getByBranch(Long branchId) {
+        return repository.findByBranchId(branchId);
     }
 }
