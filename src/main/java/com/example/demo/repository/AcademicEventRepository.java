@@ -1,10 +1,9 @@
 package com.example.demo.repository;
 
-import com.example.demo.entity.AcademicEvent;
-import org.springframework.data.jpa.repository.JpaRepository;
-
 import java.time.LocalDate;
 import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
+import com.example.demo.entity.AcademicEvent;
 
 public interface AcademicEventRepository extends JpaRepository<AcademicEvent, Long> {
 
