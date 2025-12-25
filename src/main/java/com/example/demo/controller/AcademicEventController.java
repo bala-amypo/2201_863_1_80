@@ -1,44 +1,45 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.AcademicEvent;
-import com.example.demo.service.AcademicEventService;
+import java.util.List;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import com.example.demo.entity.AcademicEvent;
+import com.example.demo.service.AcademicEventService;
 
 @RestController
 @RequestMapping("/api/events")
 public class AcademicEventController {
 
-    private final AcademicEventService academicEventService;
+    private final AcademicEventService eventService;
 
-    public AcademicEventController(AcademicEventService academicEventService) {
-        this.academicEventService = academicEventService;
+    public AcademicEventController(AcademicEventService eventService) {
+        this.eventService = eventService;
     }
 
     @PostMapping
     public AcademicEvent createEvent(@RequestBody AcademicEvent event) {
-        return academicEventService.createEvent(event);
+        return eventService.createEvent(event);
     }
 
     @PutMapping("/{id}")
     public AcademicEvent updateEvent(@PathVariable Long id,
                                      @RequestBody AcademicEvent event) {
-        return academicEventService.updateEvent(id, event);
-    }
-
-    @GetMapping("/branch/{branchId}")
-    public List<AcademicEvent> getByBranch(@PathVariable Long branchId) {
-        return academicEventService.getEventsByBranch(branchId);
+        return eventService.updateEvent(id, event);
     }
 
     @GetMapping("/{id}")
-    public AcademicEvent getById(@PathVariable Long id) {
-        return academicEventService.getEventById(id);
+    public AcademicEvent getEvent(@PathVariable Long id) {
+        return eventService.getEventById(id);
+    }
+
+    @GetMapping("/branch/{branchId}")
+    public List<AcademicEvent> getEventsByBranch(
+            @PathVariable Long branchId) {
+        return eventService.getEventsByBranch(branchId);
     }
 
     @GetMapping
     public List<AcademicEvent> getAllEvents() {
-        return academicEventService.getAllEvents();
+        return eventService.getAllEvents();
     }
 }
