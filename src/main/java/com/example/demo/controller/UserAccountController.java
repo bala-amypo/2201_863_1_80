@@ -1,13 +1,14 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.UserAccount;
+import com.example.demo.dto.ApiResponse;
+import com.example.demo.dto.LoginRequest;
+import com.example.demo.dto.RegisterRequest;
 import com.example.demo.service.UserAccountService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/user-accounts")
 public class UserAccountController {
 
     private final UserAccountService service;
@@ -16,13 +17,19 @@ public class UserAccountController {
         this.service = service;
     }
 
-    @GetMapping("/users/{id}")
-    public UserAccount getUser(@PathVariable Long id) {
-        return service.getUser(id);
+    @PostMapping("/register")
+    public ApiResponse register(
+            @Valid @RequestBody RegisterRequest request) {
+
+        service.register(request);
+        return new ApiResponse(true, "User registered successfully");
     }
 
-    @GetMapping("/users")
-    public List<UserAccount> getAll() {
-        return service.getAllUsers();
+    @PostMapping("/login")
+    public ApiResponse login(
+            @Valid @RequestBody LoginRequest request) {
+
+        String token = service.login(request);
+        return new ApiResponse(true, "Login successful", token);
     }
 }
