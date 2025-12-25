@@ -42,11 +42,12 @@ public class HarmonizedCalendar {
     }
 
     @PrePersist
-    public void onGenerate() {
+    public void onCreate() {
         this.generatedAt = LocalDateTime.now();
     }
 
-    
+    // Getters and Setters
+
     public Long getId() {
         return id;
     }
@@ -54,9 +55,17 @@ public class HarmonizedCalendar {
     public String getTitle() {
         return title;
     }
+    
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
     public String getGeneratedBy() {
         return generatedBy;
+    }
+    
+    public void setGeneratedBy(String generatedBy) {
+        this.generatedBy = generatedBy;
     }
 
     public LocalDateTime getGeneratedAt() {
@@ -67,29 +76,20 @@ public class HarmonizedCalendar {
         return effectiveFrom;
     }
 
-    public LocalDate getEffectiveTo() {
-        return effectiveTo;
-    }
-
-    public String getEventsJson() {
-        return eventsJson;
-    }
-
-    
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setGeneratedBy(String generatedBy) {
-        this.generatedBy = generatedBy;
-    }
-
     public void setEffectiveFrom(LocalDate effectiveFrom) {
         this.effectiveFrom = effectiveFrom;
     }
 
+    public LocalDate getEffectiveTo() {
+        return effectiveTo;
+    }
+
     public void setEffectiveTo(LocalDate effectiveTo) {
         this.effectiveTo = effectiveTo;
+    }
+
+    public String getEventsJson() {
+        return eventsJson;
     }
 
     public void setEventsJson(String eventsJson) {
