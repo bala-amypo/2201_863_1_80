@@ -7,7 +7,8 @@ public class EventMergeRequest {
     private List<Long> eventIds;
     private String reason;
 
-    public EventMergeRequest() {}
+    public EventMergeRequest() {
+    }
 
     public List<Long> getEventIds() {
         return eventIds;
