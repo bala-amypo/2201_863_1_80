@@ -1,29 +1,43 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.ApiResponse;
+import com.example.demo.entity.HarmonizedCalendar;
 import com.example.demo.service.HarmonizedCalendarService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/harmonized-calendars")
 public class HarmonizedCalendarController {
 
-    private final HarmonizedCalendarService service;
+    private final HarmonizedCalendarService harmonizedCalendarService;
 
-    public HarmonizedCalendarController(HarmonizedCalendarService service) {
-        this.service = service;
+    public HarmonizedCalendarController(HarmonizedCalendarService harmonizedCalendarService) {
+        this.harmonizedCalendarService = harmonizedCalendarService;
     }
 
     @PostMapping("/generate")
-    public ResponseEntity<ApiResponse> generate(
-            @RequestParam String title,
-            @RequestParam String generatedBy) {
+    public HarmonizedCalendar generate(@RequestBody Map<String, String> body) {
+        return harmonizedCalendarService.generateHarmonizedCalendar(
+                body.get("title"),
+                body.get("generatedBy")
+        );
+    }
 
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(new ApiResponse(true,
-                        "Harmonized calendar generated successfully",
-                        service.generateCalendar(title, generatedBy)));
+    @GetMapping("/{id}")
+    public HarmonizedCalendar getById(@PathVariable Long id) {
+        return harmonizedCalendarService.getCalendarById(id);
+    }
+
+    @GetMapping
+    public Object getAll() {
+        return harmonizedCalendarService.getAllCalendars();
+    }
+
+    @GetMapping("/range")
+    public Object getByRange(@RequestParam LocalDate start,
+                             @RequestParam LocalDate end) {
+        return harmonizedCalendarService.getCalendarsWithinRange(start, end);
     }
 }
