@@ -1,43 +1,35 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.AcademicEvent;
-import com.example.demo.service.AcademicEventService;
+import com.example.demo.dto.ApiResponse;
+import com.example.demo.dto.LoginRequest;
+import com.example.demo.dto.RegisterRequest;
+import com.example.demo.service.UserAccountService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
-@RequestMapping("/api/events")
-public class AcademicEventController {
+@RequestMapping("/api/auth")
+public class AuthController {
 
-    private final AcademicEventService service;
+    private final UserAccountService service;
 
-    public AcademicEventController(AcademicEventService service) {
+    public AuthController(UserAccountService service) {
         this.service = service;
     }
 
-    @PostMapping
-    public AcademicEvent create(@RequestBody AcademicEvent event) {
-        return service.createEvent(event);
+    @PostMapping("/register")
+    public ApiResponse register(
+            @Valid @RequestBody RegisterRequest request) {
+
+        service.register(request);
+        return new ApiResponse(true, "User registered successfully");
     }
 
-    @GetMapping("/{id}")
-    public AcademicEvent getById(@PathVariable Long id) {
-        return service.getEventById(id);
-    }
+    @PostMapping("/login")
+    public ApiResponse login(
+            @Valid @RequestBody LoginRequest request) {
 
-    @GetMapping("/branch/{branchId}")
-    public List<AcademicEvent> getByBranch(@PathVariable Long branchId) {
-        return service.getEventsByBranch(branchId);
-    }
-
-    @GetMapping
-    public List<AcademicEvent> getAll() {
-        return service.getAllEvents();
-    }
-
-    @PutMapping("/{id}")
-    public AcademicEvent update(@PathVariable Long id, @RequestBody AcademicEvent event) {
-        return service.updateEvent(id, event);
+        String token = service.login(request);
+        return new ApiResponse(true, "Login successful", token);
     }
 }
