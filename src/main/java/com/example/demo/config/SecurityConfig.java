@@ -7,6 +7,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -19,6 +21,12 @@ public class SecurityConfig {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
     }
 
+    // ✅ REQUIRED BEAN (FIXES YOUR ERROR)
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
@@ -29,18 +37,17 @@ public class SecurityConfig {
             )
             .authorizeHttpRequests(auth -> auth
 
-                // ✅ PUBLIC ENDPOINTS (MANDATORY FOR TEST CASES)
+                // ✅ PUBLIC ENDPOINTS
                 .requestMatchers(
                         "/status",
                         "/swagger-ui.html",
                         "/swagger-ui/**",
-                        "/v_present/**",
                         "/v3/api-docs/**",
                         "/api/user-accounts/register",
                         "/api/user-accounts/login"
                 ).permitAll()
 
-                // 🔐 EVERYTHING ELSE NEEDS JWT
+                // 🔐 PROTECTED ENDPOINTS
                 .anyRequest().authenticated()
             )
             .addFilterBefore(
