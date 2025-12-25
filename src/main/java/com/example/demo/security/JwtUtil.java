@@ -1,46 +1,60 @@
 package com.example.demo.security;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.springframework.stereotype.Component;
-
 import com.example.demo.entity.UserAccount;
+import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.Keys;
 
-@Component
+import javax.crypto.SecretKey;
+import java.util.*;
+
 public class JwtUtil {
 
-    // Dummy key init (tests expect this method)
+    private SecretKey key;
+
     public void initKey() {
-        // no-op (dummy)
+        this.key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     }
 
-    // Used by tests
-    public String generateTokenForUser(UserAccount user) {
-        return "token-" + user.getEmail();
+    public String generateToken(Map<String, Object> claims, String subject) {
+        return Jwts.builder()
+                .setClaims(claims)
+                .setSubject(subject)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
+                .signWith(key)
+                .compact();
     }
 
-    // Used by tests
+    public String generateTokenForUser(UserAccount ua) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("email", ua.getEmail());
+        claims.put("role", ua.getRole());
+        claims.put("userId", ua.getId());
+        return generateToken(claims, ua.getEmail());
+    }
+
+    public Claims parseToken(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+    }
+
     public String extractUsername(String token) {
-        return "test@example.com";
+        return parseToken(token).getSubject();
     }
 
-    // Used by tests
     public String extractRole(String token) {
-        return "USER";
+        return (String) parseToken(token).get("role");
     }
 
-    // Used by tests
     public Long extractUserId(String token) {
-        return 1L;
+        Object id = parseToken(token).get("userId");
+        return id == null ? null : Long.valueOf(id.toString());
     }
 
-    // Used by tests
-    public Map<String, Object> parseToken(String token) {
-        Map<String, Object> payload = new HashMap<>();
-        payload.put("email", extractUsername(token));
-        payload.put("role", extractRole(token));
-        payload.put("userId", extractUserId(token));
-        return payload;
+    public boolean isTokenValid(String token, String username) {
+        return extractUsername(token).equals(username);
     }
 }
