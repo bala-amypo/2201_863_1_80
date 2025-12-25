@@ -17,22 +17,10 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-
         http
             .csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers(
-                    "/swagger-ui/**",
-                    "/v3/api-docs/**",
-                    "/simple-status"
-                ).permitAll()
-                .anyRequest().authenticated()
-            )
-            // ✅ THIS LINE ENABLES LOGIN PAGE
-            .formLogin(form -> form.permitAll())
-            // ❌ disable browser popup
-            .httpBasic(httpBasic -> httpBasic.disable());
-
+            .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
+            .formLogin(form -> form.permitAll());
         return http.build();
     }
 }
