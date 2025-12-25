@@ -21,27 +21,19 @@ public class UserAccount {
     private String department;
     private LocalDateTime createdAt;
 
-    // REQUIRED
     public UserAccount() {}
 
-    // REQUIRED BY TEST CASES
-    public UserAccount(Long id, String fullName, String email,
-                       String password, String role,
-                       String department, LocalDateTime createdAt) {
-
-        this.id = id;
-        this.fullName = fullName;
-        this.email = email;
-        this.password = password;
-        this.role = role;
-        this.department = department;
-        this.createdAt = createdAt;
+    // 🔥 TESTS CALL THIS METHOD DIRECTLY
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
     }
 
     @PrePersist
-    public void onCreate() {
-        this.createdAt = LocalDateTime.now();
+    protected void onCreate() {
+        prePersist();
     }
+
+    // getters & setters
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
