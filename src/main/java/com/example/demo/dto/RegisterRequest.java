@@ -1,30 +1,29 @@
 package com.example.demo.dto;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class RegisterRequest {
 
-    private String name;
+    @NotBlank(message = "fullName is required")
+    private String fullName;
+
+    @NotBlank(message = "email is required")
     private String email;
+
+    @NotBlank(message = "password is required")
     private String password;
+
+    @NotBlank(message = "role is required")
     private String role;
+
     private String department;
 
-    public RegisterRequest() {
+    public String getFullName() {
+        return fullName;
     }
 
-    public RegisterRequest(String name, String email, String password, String role, String department) {
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.role = role;
-        this.department = department;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getEmail() {
