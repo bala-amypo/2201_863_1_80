@@ -1,6 +1,7 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.EventMergeRecord;
+import com.example.demo.exception.ValidationException;
 import com.example.demo.repository.EventMergeRecordRepository;
 import com.example.demo.service.EventMergeService;
 import org.springframework.stereotype.Service;
@@ -19,8 +20,8 @@ public class EventMergeServiceImpl implements EventMergeService {
     @Override
     public EventMergeRecord mergeEvents(List<Long> eventIds, String reason) {
 
-        if (eventIds.size() < 2) {
-            throw new RuntimeException("At least two events required");
+        if (eventIds == null || eventIds.size() < 2) {
+            throw new ValidationException("At least two events required");
         }
 
         EventMergeRecord record = new EventMergeRecord();
