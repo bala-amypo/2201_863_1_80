@@ -1,62 +1,60 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.dto.LoginRequest;
-import com.example.demo.dto.RegisterRequest;
 import com.example.demo.entity.UserAccount;
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.exception.ValidationException;
 import com.example.demo.repository.UserAccountRepository;
-import com.example.demo.security.JwtUtil;
 import com.example.demo.service.UserAccountService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class UserAccountServiceImpl implements UserAccountService {
 
-    private final UserAccountRepository repository;
+    private final UserAccountRepository userAccountRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JwtUtil jwtUtil;
 
-    public UserAccountServiceImpl(
-            UserAccountRepository repository,
-            PasswordEncoder passwordEncoder,
-            JwtUtil jwtUtil
-    ) {
-        this.repository = repository;
+    public UserAccountServiceImpl(UserAccountRepository userAccountRepository,
+                                  PasswordEncoder passwordEncoder) {
+        this.userAccountRepository = userAccountRepository;
         this.passwordEncoder = passwordEncoder;
-        this.jwtUtil = jwtUtil;
     }
 
     @Override
-    public void register(RegisterRequest request) {
+    public UserAccount register(UserAccount user) {
 
-        if (repository.findByEmail(request.getEmail()).isPresent()) {
-            throw new ValidationException("Email already exists");
+        if (userAccountRepository.existsByEmail(user.getEmail())) {
+            throw new ValidationException("Email already in use");
         }
 
-        UserAccount user = new UserAccount();
-        user.setEmail(request.getEmail());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setFullName(request.getFullName());
-        user.setRole(request.getRole());
-        user.setDepartment(request.getDepartment());
+        if (user.getPassword() == null || user.getPassword().length() < 8) {
+            throw new ValidationException("Password must be at least 8 characters");
+        }
 
-        repository.save(user);
+        if (user.getRole() == null) {
+            user.setRole("REVIEWER");
+        }
+
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return userAccountRepository.save(user);
     }
 
     @Override
-    public String login(LoginRequest request) {
+    public UserAccount findByEmail(String email) {
+        return userAccountRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+    }
 
-        UserAccount user = repository.findByEmail(request.getEmail())
-                .orElseThrow(() ->
-                        new UsernameNotFoundException("User not found"));
+    @Override
+    public UserAccount getUser(Long id) {
+        return userAccountRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+    }
 
-        if (!passwordEncoder.matches(
-                request.getPassword(), user.getPassword())) {
-            throw new ValidationException("Invalid credentials");
-        }
-
-        return jwtUtil.generateToken(user.getEmail());
+    @Override
+    public List<UserAccount> getAllUsers() {
+        return userAccountRepository.findAll();
     }
 }
