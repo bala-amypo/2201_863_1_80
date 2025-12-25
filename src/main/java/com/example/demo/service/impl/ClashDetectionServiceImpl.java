@@ -1,48 +1,48 @@
 package com.example.demo.service.impl;
 
+import java.util.List;
+import org.springframework.stereotype.Service;
+
 import com.example.demo.entity.ClashRecord;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.ClashRecordRepository;
 import com.example.demo.service.ClashDetectionService;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class ClashDetectionServiceImpl implements ClashDetectionService {
 
-    private final ClashRecordRepository clashRecordRepository;
+    private final ClashRecordRepository clashRepo;
 
-    public ClashDetectionServiceImpl(ClashRecordRepository clashRecordRepository) {
-        this.clashRecordRepository = clashRecordRepository;
+    public ClashDetectionServiceImpl(ClashRecordRepository clashRepo) {
+        this.clashRepo = clashRepo;
     }
 
     @Override
     public ClashRecord logClash(ClashRecord clash) {
-        return clashRecordRepository.save(clash);
+        return clashRepo.save(clash);
     }
 
     @Override
     public List<ClashRecord> getClashesForEvent(Long eventId) {
-        return clashRecordRepository.findByEventAIdOrEventBId(eventId, eventId);
+        return clashRepo.findByEventAIdOrEventBId(eventId, eventId);
     }
 
     @Override
     public ClashRecord resolveClash(Long clashId) {
-        ClashRecord clash = clashRecordRepository.findById(clashId)
-                .orElseThrow(() -> new ResourceNotFoundException("Clash not found"));
-
+        ClashRecord clash = clashRepo.findById(clashId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Clash not found"));
         clash.setResolved(true);
-        return clashRecordRepository.save(clash);
+        return clashRepo.save(clash);
     }
 
     @Override
     public List<ClashRecord> getUnresolvedClashes() {
-        return clashRecordRepository.findByResolvedFalse();
+        return clashRepo.findByResolvedFalse();
     }
 
     @Override
     public List<ClashRecord> getAllClashes() {
-        return clashRecordRepository.findAll();
+        return clashRepo.findAll();
     }
 }
