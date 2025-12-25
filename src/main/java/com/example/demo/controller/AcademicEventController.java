@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.ApiResponse;
 import com.example.demo.entity.AcademicEvent;
 import com.example.demo.service.AcademicEventService;
 import jakarta.validation.Valid;
@@ -18,31 +19,33 @@ public class AcademicEventController {
     }
 
     @PostMapping
-    public AcademicEvent createEvent(
-            @Valid @RequestBody AcademicEvent event) {
-        return service.createEvent(event);
+    public ApiResponse create(@Valid @RequestBody AcademicEvent event) {
+        return new ApiResponse(true, "Event created successfully",
+                service.createEvent(event));
     }
 
     @PutMapping("/{id}")
-    public AcademicEvent updateEvent(
-            @PathVariable Long id,
-            @Valid @RequestBody AcademicEvent event) {
-        return service.updateEvent(id, event);
+    public ApiResponse update(@PathVariable Long id,
+                              @Valid @RequestBody AcademicEvent event) {
+        return new ApiResponse(true, "Event updated successfully",
+                service.updateEvent(id, event));
     }
 
     @GetMapping("/{id}")
-    public AcademicEvent getEvent(@PathVariable Long id) {
-        return service.getEventById(id);
+    public ApiResponse getById(@PathVariable Long id) {
+        return new ApiResponse(true, "Event fetched successfully",
+                service.getEventById(id));
     }
 
     @GetMapping
-    public List<AcademicEvent> getAllEvents() {
-        return service.getAllEvents();
+    public ApiResponse getAll() {
+        return new ApiResponse(true, "Events fetched successfully",
+                service.getAllEvents());
     }
 
     @GetMapping("/branch/{branchId}")
-    public List<AcademicEvent> getByBranch(
-            @PathVariable Long branchId) {
-        return service.getEventsByBranch(branchId);
+    public ApiResponse getByBranch(@PathVariable Long branchId) {
+        return new ApiResponse(true, "Branch events fetched successfully",
+                service.getEventsByBranch(branchId));
     }
 }
