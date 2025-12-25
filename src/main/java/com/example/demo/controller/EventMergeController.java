@@ -4,6 +4,8 @@ import com.example.demo.dto.ApiResponse;
 import com.example.demo.dto.EventMergeRequest;
 import com.example.demo.service.EventMergeService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,14 +19,16 @@ public class EventMergeController {
     }
 
     @PostMapping
-    public ApiResponse merge(@Valid @RequestBody EventMergeRequest request) {
-        return new ApiResponse(true, "Events merged successfully",
-                service.mergeEvents(request.getEventIds(), request.getReason()));
+    public ResponseEntity<ApiResponse> merge(@Valid @RequestBody EventMergeRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(new ApiResponse(true, "Events merged successfully",
+                        service.mergeEvents(request.getEventIds(), request.getReason())));
     }
 
     @GetMapping
-    public ApiResponse history() {
-        return new ApiResponse(true, "Merge history fetched successfully",
-                service.getMergeHistory());
+    public ResponseEntity<ApiResponse> history() {
+        return ResponseEntity.ok(
+                new ApiResponse(true, "Merge history fetched successfully",
+                        service.getMergeHistory()));
     }
 }

@@ -5,6 +5,8 @@ import com.example.demo.dto.LoginRequest;
 import com.example.demo.dto.RegisterRequest;
 import com.example.demo.service.UserAccountService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,22 +20,16 @@ public class UserAccountController {
     }
 
     @PostMapping("/register")
-    public ApiResponse register(
-            @Valid @RequestBody RegisterRequest request) {
-
+    public ResponseEntity<ApiResponse> register(@Valid @RequestBody RegisterRequest request) {
         service.register(request);
-        return new ApiResponse(true,
-                "User registered successfully",
-                null);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(new ApiResponse(true, "User registered successfully", null));
     }
 
     @PostMapping("/login")
-    public ApiResponse login(
-            @Valid @RequestBody LoginRequest request) {
-
+    public ResponseEntity<ApiResponse> login(@Valid @RequestBody LoginRequest request) {
         String token = service.login(request);
-        return new ApiResponse(true,
-                "Login successful",
-                token);
+        return ResponseEntity.ok(
+                new ApiResponse(true, "Login successful", token));
     }
 }

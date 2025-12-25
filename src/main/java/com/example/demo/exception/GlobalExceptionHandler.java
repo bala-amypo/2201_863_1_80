@@ -3,7 +3,6 @@ package com.example.demo.exception;
 import com.example.demo.dto.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -11,62 +10,27 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    // 1️⃣ Resource not found
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ApiResponse> handleNotFound(
-            ResourceNotFoundException ex) {
-
-        return new ResponseEntity<>(
-                new ApiResponse(false, ex.getMessage()),
-                HttpStatus.NOT_FOUND
-        );
+    public ResponseEntity<ApiResponse> handleNotFound(ResourceNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ApiResponse(false, ex.getMessage(), null));
     }
 
-    // 2️⃣ Validation exception (CUSTOM)
     @ExceptionHandler(ValidationException.class)
-    public ResponseEntity<ApiResponse> handleValidation(
-            ValidationException ex) {
-
-        return new ResponseEntity<>(
-                new ApiResponse(false, ex.getMessage()),
-                HttpStatus.BAD_REQUEST
-        );
+    public ResponseEntity<ApiResponse> handleValidation(ValidationException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ApiResponse(false, ex.getMessage(), null));
     }
 
-    // 3️⃣ Spring Security UsernameNotFoundException
-    @ExceptionHandler(UsernameNotFoundException.class)
-    public ResponseEntity<ApiResponse> handleUsernameNotFound(
-            UsernameNotFoundException ex) {
-
-        return new ResponseEntity<>(
-                new ApiResponse(false, ex.getMessage()),
-                HttpStatus.UNAUTHORIZED
-        );
-    }
-
-    // 4️⃣ Bean validation (@Valid) failures
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ApiResponse> handleMethodValidation(
-            MethodArgumentNotValidException ex) {
-
-        String message = ex.getBindingResult()
-                .getFieldError()
-                .getDefaultMessage();
-
-        return new ResponseEntity<>(
-                new ApiResponse(false, message),
-                HttpStatus.BAD_REQUEST
-        );
+    public ResponseEntity<ApiResponse> handleBeanValidation(MethodArgumentNotValidException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ApiResponse(false, "Validation failed", null));
     }
 
-    // 5️⃣ Generic / JWT / Runtime exception
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiResponse> handleGeneric(
-            Exception ex) {
-
-        return new ResponseEntity<>(
-                new ApiResponse(false, ex.getMessage()),
-                HttpStatus.INTERNAL_SERVER_ERROR
-        );
+    public ResponseEntity<ApiResponse> handleGeneric(Exception ex) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ApiResponse(false, "Internal server error", null));
     }
 }
