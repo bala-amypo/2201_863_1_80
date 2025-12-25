@@ -2,31 +2,39 @@ package com.example.demo.dto;
 
 public class RegisterRequest {
 
-    private String name;
+    private String fullName;
     private String email;
     private String password;
     private String role;
     private String department;
 
-    public RegisterRequest() {}
+    // ✅ No-args constructor (REQUIRED)
+    public RegisterRequest() {
+    }
 
-    // 🔴 REQUIRED BY TESTS
-    public RegisterRequest(String name, String email,
-                           String password, String role,
-                           String department) {
-        this.name = name;
+    // ✅ All-args constructor (USED IN TESTS)
+    public RegisterRequest(
+            String fullName,
+            String email,
+            String password,
+            String role,
+            String department
+    ) {
+        this.fullName = fullName;
         this.email = email;
         this.password = password;
         this.role = role;
         this.department = department;
     }
 
-    public String getName() {
-        return name;
+    // ✅ Getters & Setters (TEST VALIDATES VALUES)
+
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getEmail() {
