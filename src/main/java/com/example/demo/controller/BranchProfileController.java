@@ -1,39 +1,26 @@
 package com.example.demo.controller;
 
-import java.util.List;
-import org.springframework.web.bind.annotation.*;
-
 import com.example.demo.entity.BranchProfile;
 import com.example.demo.service.BranchProfileService;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/branches")
+@RequestMapping("/branches")
 public class BranchProfileController {
 
-    private final BranchProfileService branchService;
+    private final BranchProfileService service;
 
-    public BranchProfileController(BranchProfileService branchService) {
-        this.branchService = branchService;
+    public BranchProfileController(BranchProfileService service) {
+        this.service = service;
     }
 
     @PostMapping
-    public BranchProfile createBranch(@RequestBody BranchProfile branch) {
-        return branchService.createBranch(branch);
-    }
-
-    @PutMapping("/{id}/status")
-    public BranchProfile updateStatus(@PathVariable Long id,
-                                      @RequestParam boolean active) {
-        return branchService.updateBranchStatus(id, active);
-    }
-
-    @GetMapping
-    public List<BranchProfile> getAllBranches() {
-        return branchService.getAllBranches();
+    public BranchProfile save(@RequestBody BranchProfile branch) {
+        return service.save(branch);
     }
 
     @GetMapping("/{id}")
-    public BranchProfile getBranch(@PathVariable Long id) {
-        return branchService.getBranchById(id);
+    public BranchProfile get(@PathVariable Long id) {
+        return service.getById(id);
     }
 }
