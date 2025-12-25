@@ -5,11 +5,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "event_merge_records")
 public class EventMergeRecord {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Long id;
 
     private String sourceEventIds;
@@ -19,16 +18,20 @@ public class EventMergeRecord {
     private String mergeReason;
     private LocalDateTime createdAt;
 
-    public EventMergeRecord() {}
+    // ✅ No-args constructor (JPA + TESTS)
+    public EventMergeRecord() {
+    }
 
-    // ✅ REQUIRED BY TEST CASES
-    public EventMergeRecord(Long id,
-                            String sourceEventIds,
-                            String mergedTitle,
-                            LocalDate mergedStartDate,
-                            LocalDate mergedEndDate,
-                            String mergeReason,
-                            LocalDateTime createdAt) {
+    // ✅ All-args constructor (USED IN TESTS)
+    public EventMergeRecord(
+            Long id,
+            String sourceEventIds,
+            String mergedTitle,
+            LocalDate mergedStartDate,
+            LocalDate mergedEndDate,
+            String mergeReason,
+            LocalDateTime createdAt
+    ) {
         this.id = id;
         this.sourceEventIds = sourceEventIds;
         this.mergedTitle = mergedTitle;
@@ -38,32 +41,75 @@ public class EventMergeRecord {
         this.createdAt = createdAt;
     }
 
+    // ✅ Tests call this directly
     @PrePersist
-    public void onCreate() {
-        this.createdAt = LocalDateTime.now();
-    }
-
     public void prePersist() {
-        onCreate();
+        if (this.createdAt == null) {
+            this.createdAt = LocalDateTime.now();
+        }
     }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    // =========================
+    // GETTERS
+    // =========================
 
-    public String getSourceEventIds() { return sourceEventIds; }
-    public void setSourceEventIds(String sourceEventIds) { this.sourceEventIds = sourceEventIds; }
+    public Long getId() {
+        return id;
+    }
 
-    public String getMergedTitle() { return mergedTitle; }
-    public void setMergedTitle(String mergedTitle) { this.mergedTitle = mergedTitle; }
+    public String getSourceEventIds() {
+        return sourceEventIds;
+    }
 
-    public LocalDate getMergedStartDate() { return mergedStartDate; }
-    public void setMergedStartDate(LocalDate mergedStartDate) { this.mergedStartDate = mergedStartDate; }
+    public String getMergedTitle() {
+        return mergedTitle;
+    }
 
-    public LocalDate getMergedEndDate() { return mergedEndDate; }
-    public void setMergedEndDate(LocalDate mergedEndDate) { this.mergedEndDate = mergedEndDate; }
+    public LocalDate getMergedStartDate() {
+        return mergedStartDate;
+    }
 
-    public String getMergeReason() { return mergeReason; }
-    public void setMergeReason(String mergeReason) { this.mergeReason = mergeReason; }
+    public LocalDate getMergedEndDate() {
+        return mergedEndDate;
+    }
 
-    public LocalDateTime getCreatedAt() { return createdAt; }
+    public String getMergeReason() {
+        return mergeReason;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    // =========================
+    // SETTERS
+    // =========================
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setSourceEventIds(String sourceEventIds) {
+        this.sourceEventIds = sourceEventIds;
+    }
+
+    public void setMergedTitle(String mergedTitle) {
+        this.mergedTitle = mergedTitle;
+    }
+
+    public void setMergedStartDate(LocalDate mergedStartDate) {
+        this.mergedStartDate = mergedStartDate;
+    }
+
+    public void setMergedEndDate(LocalDate mergedEndDate) {
+        this.mergedEndDate = mergedEndDate;
+    }
+
+    public void setMergeReason(String mergeReason) {
+        this.mergeReason = mergeReason;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
 }

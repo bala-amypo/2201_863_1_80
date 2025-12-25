@@ -4,29 +4,31 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "branch_profiles")
 public class BranchProfile {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Long id;
 
     private String branchCode;
     private String branchName;
     private String contactEmail;
-    private LocalDateTime lastSyncAt;
     private Boolean active;
+    private LocalDateTime lastSyncAt;
 
-    // ✅ REQUIRED
-    public BranchProfile() {}
+    // ✅ No-args constructor (JPA + TESTS)
+    public BranchProfile() {
+    }
 
-    // ✅ REQUIRED BY TEST CASES
-    public BranchProfile(Long id,
-                         String branchCode,
-                         String branchName,
-                         String contactEmail,
-                         LocalDateTime lastSyncAt,
-                         Boolean active) {
+    // ✅ All-args constructor (USED IN TESTS)
+    public BranchProfile(
+            Long id,
+            String branchCode,
+            String branchName,
+            String contactEmail,
+            LocalDateTime lastSyncAt,
+            Boolean active
+    ) {
         this.id = id;
         this.branchCode = branchCode;
         this.branchName = branchName;
@@ -35,30 +37,70 @@ public class BranchProfile {
         this.active = active;
     }
 
+    // ✅ Tests call this directly
     @PrePersist
-    public void onCreate() {
-        this.lastSyncAt = LocalDateTime.now();
-        this.active = true;
-    }
-
     public void prePersist() {
-        onCreate();
+        if (this.lastSyncAt == null) {
+            this.lastSyncAt = LocalDateTime.now();
+        }
+        if (this.active == null) {
+            this.active = true;
+        }
     }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    // =========================
+    // GETTERS
+    // =========================
 
-    public String getBranchCode() { return branchCode; }
-    public void setBranchCode(String branchCode) { this.branchCode = branchCode; }
+    public Long getId() {
+        return id;
+    }
 
-    public String getBranchName() { return branchName; }
-    public void setBranchName(String branchName) { this.branchName = branchName; }
+    public String getBranchCode() {
+        return branchCode;
+    }
 
-    public String getContactEmail() { return contactEmail; }
-    public void setContactEmail(String contactEmail) { this.contactEmail = contactEmail; }
+    public String getBranchName() {
+        return branchName;
+    }
 
-    public LocalDateTime getLastSyncAt() { return lastSyncAt; }
+    public String getContactEmail() {
+        return contactEmail;
+    }
 
-    public Boolean getActive() { return active; }
-    public void setActive(Boolean active) { this.active = active; }
+    public Boolean getActive() {
+        return active;
+    }
+
+    public LocalDateTime getLastSyncAt() {
+        return lastSyncAt;
+    }
+
+    // =========================
+    // SETTERS
+    // =========================
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setBranchCode(String branchCode) {
+        this.branchCode = branchCode;
+    }
+
+    public void setBranchName(String branchName) {
+        this.branchName = branchName;
+    }
+
+    public void setContactEmail(String contactEmail) {
+        this.contactEmail = contactEmail;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
+    public void setLastSyncAt(LocalDateTime lastSyncAt) {
+        this.lastSyncAt = lastSyncAt;
+    }
 }

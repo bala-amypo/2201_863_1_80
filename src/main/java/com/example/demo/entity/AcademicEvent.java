@@ -5,11 +5,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "academic_events")
 public class AcademicEvent {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Long id;
 
     private Long branchId;
@@ -21,19 +20,22 @@ public class AcademicEvent {
     private String description;
     private LocalDateTime submittedAt;
 
-    // ✅ REQUIRED: No-arg constructor
-    public AcademicEvent() {}
+    // ✅ No-args constructor (JPA + TESTS)
+    public AcademicEvent() {
+    }
 
-    // ✅ REQUIRED BY TEST CASES
-    public AcademicEvent(Long id,
-                         Long branchId,
-                         String title,
-                         String eventType,
-                         LocalDate startDate,
-                         LocalDate endDate,
-                         String location,
-                         String description,
-                         LocalDateTime submittedAt) {
+    // ✅ All-args constructor (USED IN TESTS)
+    public AcademicEvent(
+            Long id,
+            Long branchId,
+            String title,
+            String eventType,
+            LocalDate startDate,
+            LocalDate endDate,
+            String location,
+            String description,
+            LocalDateTime submittedAt
+    ) {
         this.id = id;
         this.branchId = branchId;
         this.title = title;
@@ -45,39 +47,91 @@ public class AcademicEvent {
         this.submittedAt = submittedAt;
     }
 
+    // ✅ Tests call this directly
     @PrePersist
-    public void onCreate() {
-        this.submittedAt = LocalDateTime.now();
-    }
-
-    // ✅ REQUIRED BY TESTS
     public void prePersist() {
-        onCreate();
+        if (this.submittedAt == null) {
+            this.submittedAt = LocalDateTime.now();
+        }
     }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    // =========================
+    // GETTERS
+    // =========================
 
-    public Long getBranchId() { return branchId; }
-    public void setBranchId(Long branchId) { this.branchId = branchId; }
+    public Long getId() {
+        return id;
+    }
 
-    public String getTitle() { return title; }
-    public void setTitle(String title) { this.title = title; }
+    public Long getBranchId() {
+        return branchId;
+    }
 
-    public String getEventType() { return eventType; }
-    public void setEventType(String eventType) { this.eventType = eventType; }
+    public String getTitle() {
+        return title;
+    }
 
-    public LocalDate getStartDate() { return startDate; }
-    public void setStartDate(LocalDate startDate) { this.startDate = startDate; }
+    public String getEventType() {
+        return eventType;
+    }
 
-    public LocalDate getEndDate() { return endDate; }
-    public void setEndDate(LocalDate endDate) { this.endDate = endDate; }
+    public LocalDate getStartDate() {
+        return startDate;
+    }
 
-    public String getLocation() { return location; }
-    public void setLocation(String location) { this.location = location; }
+    public LocalDate getEndDate() {
+        return endDate;
+    }
 
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
+    public String getLocation() {
+        return location;
+    }
 
-    public LocalDateTime getSubmittedAt() { return submittedAt; }
+    public String getDescription() {
+        return description;
+    }
+
+    public LocalDateTime getSubmittedAt() {
+        return submittedAt;
+    }
+
+    // =========================
+    // SETTERS
+    // =========================
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setBranchId(Long branchId) {
+        this.branchId = branchId;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setEventType(String eventType) {
+        this.eventType = eventType;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setSubmittedAt(LocalDateTime submittedAt) {
+        this.submittedAt = submittedAt;
+    }
 }
