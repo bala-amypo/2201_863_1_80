@@ -13,79 +13,59 @@ public class HarmonizedCalendar {
     private Long id;
 
     private String title;
-
     private String generatedBy;
 
     private LocalDateTime generatedAt;
 
     private LocalDate effectiveFrom;
-
     private LocalDate effectiveTo;
 
     @Lob
     private String eventsJson;
 
+    // ✅ NO-ARGS CONSTRUCTOR
     public HarmonizedCalendar() {
+    }
+
+    // ✅ REQUIRED BY TESTS
+    public HarmonizedCalendar(Long id,
+                              String title,
+                              String generatedBy,
+                              LocalDateTime generatedAt,
+                              LocalDate effectiveFrom,
+                              LocalDate effectiveTo,
+                              String eventsJson) {
+
+        this.id = id;
+        this.title = title;
+        this.generatedBy = generatedBy;
+        this.generatedAt = generatedAt;
+        this.effectiveFrom = effectiveFrom;
+        this.effectiveTo = effectiveTo;
+        this.eventsJson = eventsJson;
     }
 
     @PrePersist
     public void prePersist() {
-        this.generatedAt = LocalDateTime.now();
+        if (this.generatedAt == null) {
+            this.generatedAt = LocalDateTime.now();
+        }
     }
 
     // ===== GETTERS =====
+    public Long getId() { return id; }
+    public String getTitle() { return title; }
+    public String getGeneratedBy() { return generatedBy; }
+    public LocalDateTime getGeneratedAt() { return generatedAt; }
+    public LocalDate getEffectiveFrom() { return effectiveFrom; }
+    public LocalDate getEffectiveTo() { return effectiveTo; }
+    public String getEventsJson() { return eventsJson; }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getGeneratedBy() {
-        return generatedBy;
-    }
-
-    public LocalDateTime getGeneratedAt() {
-        return generatedAt;
-    }
-
-    public LocalDate getEffectiveFrom() {
-        return effectiveFrom;
-    }
-
-    public LocalDate getEffectiveTo() {
-        return effectiveTo;
-    }
-
-    public String getEventsJson() {
-        return eventsJson;
-    }
-
-    // ===== SETTERS (🔥 REQUIRED BY TESTS) =====
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setGeneratedBy(String generatedBy) {
-        this.generatedBy = generatedBy;
-    }
-
-    public void setEffectiveFrom(LocalDate effectiveFrom) {
-        this.effectiveFrom = effectiveFrom;
-    }
-
-    public void setEffectiveTo(LocalDate effectiveTo) {
-        this.effectiveTo = effectiveTo;
-    }
-
-    public void setEventsJson(String eventsJson) {
-        this.eventsJson = eventsJson;
-    }
+    // ===== SETTERS =====
+    public void setId(Long id) { this.id = id; }
+    public void setTitle(String title) { this.title = title; }
+    public void setGeneratedBy(String generatedBy) { this.generatedBy = generatedBy; }
+    public void setEffectiveFrom(LocalDate effectiveFrom) { this.effectiveFrom = effectiveFrom; }
+    public void setEffectiveTo(LocalDate effectiveTo) { this.effectiveTo = effectiveTo; }
+    public void setEventsJson(String eventsJson) { this.eventsJson = eventsJson; }
 }

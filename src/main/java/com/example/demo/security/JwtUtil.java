@@ -11,7 +11,7 @@ import java.util.Map;
 public class JwtUtil {
 
     private Key key;
-    private final long expirationMillis = 1000 * 60 * 60; // 1 hour
+    private final long expirationMillis = 3600000;
 
     public void initKey() {
         this.key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
@@ -39,38 +39,15 @@ public class JwtUtil {
                 .compact();
     }
 
-    public String extractUsername(String token) {
-        return parseToken(token).getBody().getSubject();
+    // ✅ TEST EXPECTS getPayload()
+    public Claims getPayload(String token) {
+        return parseToken(token).getBody();
     }
 
-    public String extractRole(String token) {
-        return (String) parseToken(token).getBody().get("role");
-    }
-
-    public Long extractUserId(String token) {
-        Object id = parseToken(token).getBody().get("userId");
-        return id == null ? null : Long.valueOf(id.toString());
-    }
-
-    public boolean isTokenValid(String token, String username) {
-        try {
-            return extractUsername(token).equals(username)
-                    && !parseToken(token).getBody().getExpiration().before(new Date());
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    // ===== REQUIRED BY TESTS =====
     public Jws<Claims> parseToken(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()
                 .parseClaimsJws(token);
-    }
-
-    // 🔥 TEST EXPECTS getPayload()
-    public Claims getPayload(String token) {
-        return parseToken(token).getBody();
     }
 }
