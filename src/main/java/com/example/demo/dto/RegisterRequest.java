@@ -8,7 +8,17 @@ public class RegisterRequest {
     private String role;
     private String department;
 
-    public RegisterRequest() {
+    public RegisterRequest() {}
+
+    // 🔴 REQUIRED BY TESTS
+    public RegisterRequest(String name, String email,
+                           String password, String role,
+                           String department) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.department = department;
     }
 
     public String getName() {

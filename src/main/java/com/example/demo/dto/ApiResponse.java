@@ -8,6 +8,7 @@ public class ApiResponse {
 
     public ApiResponse() {}
 
+    // 🔴 REQUIRED BY TESTS
     public ApiResponse(boolean success, String message, Object data) {
         this.success = success;
         this.message = message;
@@ -18,11 +19,26 @@ public class ApiResponse {
         return success;
     }
 
+    // 🔴 REQUIRED BY TESTS
+    public void setSuccess(boolean success) {
+        this.success = success;
+    }
+
     public String getMessage() {
         return message;
     }
 
+    // 🔴 REQUIRED BY TESTS
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
     public Object getData() {
         return data;
+    }
+
+    // 🔴 REQUIRED BY TESTS
+    public void setData(Object data) {
+        this.data = data;
     }
 }

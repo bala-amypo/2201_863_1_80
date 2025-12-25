@@ -7,7 +7,12 @@ public class EventMergeRequest {
     private List<Long> eventIds;
     private String reason;
 
-    public EventMergeRequest() {
+    public EventMergeRequest() {}
+
+    // 🔴 REQUIRED BY TESTS
+    public EventMergeRequest(List<Long> eventIds, String reason) {
+        this.eventIds = eventIds;
+        this.reason = reason;
     }
 
     public List<Long> getEventIds() {
