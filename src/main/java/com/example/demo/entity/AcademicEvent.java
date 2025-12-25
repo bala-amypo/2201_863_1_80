@@ -1,35 +1,45 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-
-import java.time.LocalDate;
+import java.time.*;
 
 @Entity
+@Table(name = "academic_events")
 public class AcademicEvent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
     private Long branchId;
-
-    @NotBlank
     private String title;
-
-    @NotBlank
     private String eventType;
-
-    @NotNull
     private LocalDate startDate;
-
-    @NotNull
     private LocalDate endDate;
-
     private String location;
     private String description;
+    private LocalDateTime submittedAt;
+
+    public AcademicEvent() {}
+
+    public AcademicEvent(Long id, Long branchId, String title, String eventType,
+                         LocalDate startDate, LocalDate endDate,
+                         String location, String description, LocalDateTime submittedAt) {
+        this.id = id;
+        this.branchId = branchId;
+        this.title = title;
+        this.eventType = eventType;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.location = location;
+        this.description = description;
+        this.submittedAt = submittedAt;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        this.submittedAt = LocalDateTime.now();
+    }
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -54,4 +64,6 @@ public class AcademicEvent {
 
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
+
+    public LocalDateTime getSubmittedAt() { return submittedAt; }
 }
