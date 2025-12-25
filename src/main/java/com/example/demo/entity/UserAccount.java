@@ -43,12 +43,18 @@ public class UserAccount {
         this.createdAt = LocalDateTime.now();
     }
 
+    // 🔴 REQUIRED BY TEST CASES
+    public void prePersist() {
+        onCreate();
+    }
+
     // Getters and Setters
 
     public Long getId() {
         return id;
     }
 
+    // 🔴 REQUIRED BY TEST CASES
     public void setId(Long id) {
         this.id = id;
     }
@@ -64,7 +70,7 @@ public class UserAccount {
     public String getEmail() {
         return email;
     }
-
+    
     public void setEmail(String email) {
         this.email = email;
     }
