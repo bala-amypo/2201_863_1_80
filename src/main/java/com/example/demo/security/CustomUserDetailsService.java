@@ -31,4 +31,3 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .build();
     }
 }
-demo/src/test
