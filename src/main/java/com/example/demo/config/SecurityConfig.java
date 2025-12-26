@@ -40,6 +40,7 @@ public class SecurityConfig {
                     sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
                     .requestMatchers(
+                            "/",                // ⭐ ADD THIS LINE
                             "/auth/**",
                             "/swagger-ui/**",
                             "/v3/api-docs/**",
@@ -52,4 +53,3 @@ public class SecurityConfig {
         return http.build();
     }
 }
-
