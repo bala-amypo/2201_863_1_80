@@ -21,7 +21,7 @@ public class SecurityConfig {
     @Bean
     public JwtUtil jwtUtil() {
         JwtUtil util = new JwtUtil();
-        util.initKey();   // REQUIRED FOR TESTS
+        util.initKey();   
         return util;
     }
 
@@ -40,7 +40,7 @@ public class SecurityConfig {
                     sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
                     .requestMatchers(
-                            "/",                // ⭐ ADD THIS LINE
+                            "/",                
                             "/auth/**",
                             "/swagger-ui/**",
                             "/v3/api-docs/**",

@@ -18,15 +18,15 @@ public class OpenApiConfig {
     @Bean
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
-                // 👇 COLLEGE SERVER (UNCHANGED)
+                
                 .servers(List.of(
                         new Server().url("https://9092.32procr.amypo.ai/")
                 ))
 
-                // 👇 ADD SECURITY REQUIREMENT (ONLY ADDITION)
+                
                 .addSecurityItem(new SecurityRequirement().addList(SECURITY_SCHEME_NAME))
 
-                // 👇 ADD SECURITY SCHEME (ONLY ADDITION)
+                
                 .components(new Components()
                         .addSecuritySchemes(SECURITY_SCHEME_NAME,
                                 new SecurityScheme()

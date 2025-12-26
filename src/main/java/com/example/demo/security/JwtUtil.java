@@ -28,7 +28,7 @@ public class JwtUtil {
                 .compact();
     }
 
-    // Used by tests t61–t71
+   
     public String generateTokenForUser(UserAccount user) {
         return Jwts.builder()
                 .claim("userId", user.getId())
@@ -62,7 +62,7 @@ public class JwtUtil {
         return parseToken(token).getPayload().get("role").toString();
     }
 
-    // IMPORTANT: test calls getPayload()
+   
     public Jws<Claims> parseToken(String token) {
         return Jwts.parser()
                 .verifyWith(key)
